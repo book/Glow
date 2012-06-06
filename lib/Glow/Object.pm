@@ -19,6 +19,16 @@ has content => ( is => 'ro', isa => 'Str', lazy_build => 1, required => 0 );
 has content_source => ( is => 'ro', isa => 'CodeRef', required => 0, predicate => 'has_content_source' );
 
 # builders
+sub _build_size {
+    my ($self) = @_;
+
+    return length $self->content if $self->has_content;
+
+    my $fh = $self->content_fh;
+    $fh->seek( 0, SEEK_END );
+    return $fh->tell;
+}
+
 sub _build_sha1 {
     my ($self) = @_;
     my $sha1 = Digest::SHA1->new;
