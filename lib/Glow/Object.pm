@@ -1,11 +1,36 @@
 package Glow::Object;
 use Moose::Role;
 
+use FileHandle;
+use IO::String;
 use Digest::SHA1;
 
+# all attributes are read-only
+
 has kind => ( is => 'ro', isa => 'Str', lazy_build => 1, init_arg => undef );
+
+# these attributes can be generated, and need not to be set in the constructor
 has size => ( is => 'ro', isa => 'Int', lazy_build => 1, required => 0 );
 has sha1 => ( is => 'ro', isa => 'Str', lazy_build => 1, required => 0 );
 has content => ( is => 'ro', isa => 'Str', lazy_build => 1, required => 0 );
+
+# a coderef that will always return a filehandle pointing at the beginning of the content
+has content_source => ( is => 'ro', isa => 'CodeRef', required => 0, predicate => 'has_content_source' );
+
+# builders
+sub _build_content {
+    my ($self) = @_;
+    my $fh = $self->content_fh;
+    local $/;
+    return <$fh>;
+}
+
+# methods
+sub content_fh {
+    my ($self) = @_;
+    return $self->has_content
+        ? IO::String->new( $self->content )
+        : $self->content_source->();
+}
 
 1;
