@@ -19,6 +19,13 @@ has content => ( is => 'ro', isa => 'Str', lazy_build => 1, required => 0 );
 has content_source => ( is => 'ro', isa => 'CodeRef', required => 0, predicate => 'has_content_source' );
 
 # builders
+sub _build_kind {
+    my ($self) = @_;
+    my $class = ref $self;
+    $class =~ /^Glow::Object::(\w+)$/;
+    return lc $1;
+}
+
 sub _build_size {
     my ($self) = @_;
 
