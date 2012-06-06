@@ -39,6 +39,13 @@ around BUILDARGS => sub {
     return $args;
 };
 
+# we can only pass one of 'content' or 'content_source'
+sub BUILD {
+    my ($self) = @_;
+    die "At least one but only one of attributes content or content_source is required"
+      if $self->has_content + $self->has_content_source != 1;
+}
+
 # builders
 sub _build_kind {
     my ($self) = @_;
