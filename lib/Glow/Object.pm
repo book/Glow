@@ -3,6 +3,7 @@ use Moose::Role;
 
 use FileHandle;
 use IO::String;
+use Fcntl qw( SEEK_END );
 use Digest::SHA1;
 
 # all attributes are read-only
@@ -18,6 +19,19 @@ has content => ( is => 'ro', isa => 'Str', lazy_build => 1, required => 0 );
 has content_source => ( is => 'ro', isa => 'CodeRef', required => 0, predicate => 'has_content_source' );
 
 # builders
+sub _build_sha1 {
+    my ($self) = @_;
+    my $sha1 = Digest::SHA1->new;
+    $sha1->add( $self->kind . ' ' . $self->size . "\0" );
+    if ( $self->has_content ) {
+        $sha1->add( $self->content );
+    }
+    else {
+        $sha1->addfile( $self->content_fh );
+    }
+    return $sha1->hexdigest;
+}
+
 sub _build_content {
     my ($self) = @_;
     my $fh = $self->content_fh;
