@@ -1,6 +1,7 @@
 package Glow::Object;
 use Moose::Role;
 
+use Carp;
 use FileHandle;
 use IO::String;
 use Fcntl qw( SEEK_END );
@@ -28,6 +29,8 @@ around BUILDARGS => sub {
     my $class = shift;
     my $args  = $class->$orig(@_);
     if( exists $args->{source} ) {
+        croak "Only one of argument source or content_source is allowed"
+            if exists $args->{content_source};
         my $source = delete $args->{source};
         die "$source does not exist" if !-e $source;
         die "$source is unreadable"  if !-r $source;
@@ -42,7 +45,7 @@ around BUILDARGS => sub {
 # we can only pass one of 'content' or 'content_source'
 sub BUILD {
     my ($self) = @_;
-    die "At least one but only one of attributes content or content_source is required"
+    croak "At least one but only one of attributes content or content_source is required"
       if $self->has_content + $self->has_content_source != 1;
 }
 
