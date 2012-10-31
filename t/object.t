@@ -6,7 +6,7 @@ use Glow::Object::Blob;
 
 my @tests = (
     [ content => 'hello' ],
-    [ source  => 't/hello' ],
+    [ source  => 't/content/hello' ],
 );
 
 for my $args (@tests) {
@@ -31,7 +31,7 @@ for my $args (@tests) {
 
 # test some error conditions
 my $error_re = qr/^At least one but only one of attributes content or content_source is required /;
-ok( !eval { Glow::Object::Blob->new( content => 'hello', source => 't/hello' ); }, 'content + source' );
+ok( !eval { Glow::Object::Blob->new( content => 'hello', source => 't/content/hello' ); }, 'content + source' );
 like( $@, $error_re, 'expected error message' );
 
 ok( !eval { Glow::Object::Blob->new(); }, 'no args' );
