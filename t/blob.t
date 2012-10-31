@@ -3,10 +3,12 @@ use warnings;
 use Test::More;
 
 use Glow::Object::Blob;
+use IO::String;
 
 my @tests = (
     [ content => 'hello' ],
     [ source  => 't/content/hello' ],
+    [ content_source  => sub { IO::String->new( 'hello' ) } ],
 );
 
 for my $args (@tests) {
