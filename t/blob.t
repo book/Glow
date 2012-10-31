@@ -32,12 +32,26 @@ for my $args (@tests) {
 }
 
 # test some error conditions
-my $error_re = qr/^At least one but only one of attributes content or content_source is required /;
-ok( !eval { Glow::Object::Blob->new( content => 'hello', source => 't/content/hello' ); }, 'content + source' );
-like( $@, $error_re, 'expected error message' );
+my $error1 = qr/^At least one but only one of attributes content or content_source is required /;
+my $error2 = qr/^Only one of argument source or content_source is allowed /;
+my @errors = (
+    [ [] => $error1, 'no args' ],
+    [   [ content => 'hello', source => 't/content/hello' ] => $error1,
+        'content + source'
+    ],
+    [   [ content => '', content_source => sub { } ] => $error1,
+        'content + content_source'
+    ],
+    [   [ source => 't/content/hello', content_source => sub { } ] => $error2,
+        'source + content_source'
+    ],
+);
 
-ok( !eval { Glow::Object::Blob->new(); }, 'no args' );
-like( $@, $error_re, 'expected error message' );
+for my $t (@errors) {
+    my ( $args, $error, $mesg ) = @$t;
+    ok( !eval { Glow::Object::Blob->new(@$args); }, $mesg );
+    like( $@, $error, 'expected error message' );
+}
 
 done_testing;
 
