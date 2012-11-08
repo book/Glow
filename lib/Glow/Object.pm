@@ -90,9 +90,9 @@ sub _build_content {
 # methods
 sub content_fh {
     my ($self) = @_;
-    return $self->has_content
-        ? IO::String->new( $self->content )
-        : $self->content_source->();
+    return $self->has_content_source
+        ? $self->content_source->()
+        : IO::String->new( $self->content );
 }
 
 1;
