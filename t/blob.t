@@ -17,7 +17,7 @@ for my $args (@tests) {
     # read content in memory early
     $blob = Glow::Object::Blob->new(@$args);
     is( $blob->kind,                'blob',  'kind' );
-    is( $blob->content_fh->getline, 'hello', 'content' );
+    is( $blob->content_fh->getline, 'hello', 'content_fh' );
     is( $blob->content,             'hello', 'content' );
     is( $blob->size,                5,       'size' );
     is( $blob->sha1, 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0', 'sha1' );
@@ -27,7 +27,7 @@ for my $args (@tests) {
     is( $blob->kind, 'blob',                                     'kind' );
     is( $blob->sha1, 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0', 'sha1' );
     is( $blob->size, 5,                                          'size' );
-    is( $blob->content_fh->getline, 'hello', 'content' );
+    is( $blob->content_fh->getline, 'hello', 'content_fh' );
     is( $blob->content,             'hello', 'content' );
 }
 
