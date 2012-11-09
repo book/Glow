@@ -1,0 +1,48 @@
+NAME
+
+Glow - Git-like object warehouse
+
+DESCRIPTION
+
+Glow is using and extending the concepts of the Git Object Database,
+to provide support for additional objects of any size, with any
+relationships between them.
+
+The default Glow implementation provides support for the four kinds of
+objects provided by Git: blob, tree, commit and tag.
+
+CAVEAT EMPTOR
+
+Glow started as an exercise to force me to learn Moose while
+providing the foundations for a relatively ambitious project:
+extend the concepts of the Git object database to support extended
+objects of any size.
+
+At this stage, it is still a work in progress, that is far from
+being production-ready. It may even change name at some point.
+
+NAMING
+
+The name Glow is an acronym for "Git-like object warehouse".
+This is more positive than Gloom ("Git-like objects on Moose"),
+and more general than Globe ("Git-like object backEnd"). It is
+good enough for now.
+
+AUTHOR
+
+Philippe Bruhat (BooK)
+
+ACKNOWLEDGEMENT
+
+Glow is heavily inspired from Git itself, and from the Moose-based,
+pure Perl implementaion Git::PurePerl.
+
+COPYRIGHT
+
+Copyright 2012 Philippe Bruhat (BooK), all rights reserved.
+
+LICENSE
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
