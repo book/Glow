@@ -84,7 +84,7 @@ sub _build_content {
     my ($self) = @_;
     my $fh = $self->content_fh;
     local $/;
-    return <$fh>;
+    return <$fh> // '';
 }
 
 # methods
