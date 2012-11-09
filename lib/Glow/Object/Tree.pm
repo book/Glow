@@ -2,7 +2,7 @@ package Glow::Object::Tree;
 use Moose;
 use Carp;
 
-with 'Glow::Object';
+with 'Glow::Role::Object';
 
 has directory_entries => (
     is         => 'ro',

@@ -1,4 +1,4 @@
-package Glow::Object;
+package Glow::Role::Object;
 use Moose::Role;
 
 use Carp;
