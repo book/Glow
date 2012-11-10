@@ -28,16 +28,8 @@ around BUILD => sub {
 around _build_content => sub {
     my $orig = shift;
     my $self = shift;
-    if ( $self->has_directory_entries ) {
-        my $content = '';
-        foreach my $de ( $self->directory_entries ) {
-            $content
-                .= $de->mode . ' '
-                . $de->filename . "\0"
-                . pack( 'H*', $de->sha1 );
-        }
-        return $content;
-    }
+    return join '', map $_->as_content, $self->directory_entries
+        if $self->has_directory_entries;
     $self->$orig;
 };
 
