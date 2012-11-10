@@ -12,16 +12,41 @@ use Digest::SHA;
 requires 'kind';
 
 # these attributes can be generated, and need not to be set in the constructor
-has size => ( is => 'ro', isa => 'Int', lazy_build => 1, required => 0 );
-has sha1 => ( is => 'ro', isa => 'Str', lazy_build => 1, required => 0 );
+has size => (
+    is       => 'ro',
+    isa      => 'Int',
+    lazy     => 1,
+    required => 0,
+    builder  => '_build_size',
+);
+
+has sha1 => (
+    is       => 'ro',
+    isa      => 'Str',
+    lazy     => 1,
+    required => 0,
+    builder  => '_build_sha1',
+);
 
 # these attributes define the content, from which almost everything derives:
 # - raw content, as a string
-has content => ( is => 'ro', isa => 'Str', lazy_build => 1, required => 0 );
+has content => (
+    is        => 'ro',
+    isa       => 'Str',
+    lazy      => 1,
+    required  => 0,
+    builder   => '_build_content',
+    predicate => 'has_content',
+);
 
 # - a coderef that returns a filehandle pointing at the content beginning
 #   (BUILDARGS supports a 'source' parameter to pass in a filename instead)
-has content_source => ( is => 'ro', isa => 'CodeRef', required => 0, predicate => 'has_content_source' );
+has content_source => (
+    is        => 'ro',
+    isa       => 'CodeRef',
+    required  => 0,
+    predicate => 'has_content_source'
+);
 
 # turn the 'source' parameter into a 'content_source' parameter
 around BUILDARGS => sub {

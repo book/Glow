@@ -7,7 +7,10 @@ with 'Glow::Role::Object';
 has directory_entries => (
     is         => 'ro',
     isa        => 'ArrayRef[Glow::DirectoryEntry]',
-    lazy_build => 1,
+    lazy       => 1,
+    required   => 0,
+    predicate  => 'has_directory_entries',
+    builder    => '_build_directory_entries',
     auto_deref => 1,
 );
 
