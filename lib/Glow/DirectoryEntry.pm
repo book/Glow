@@ -1,11 +1,7 @@
 package Glow::DirectoryEntry;
 use Moose;
 
-has 'mode'     => ( is => 'ro', isa => 'Str',           required => 1 );
-has 'filename' => ( is => 'ro', isa => 'Str',           required => 1 );
-has 'sha1'     => ( is => 'ro', isa => 'Str',           required => 1 );
+with 'Glow::Role::DirectoryEntry';
 
-__PACKAGE__->meta->make_immutable;
-
-
+1;
 
