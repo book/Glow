@@ -9,7 +9,7 @@ use Digest::SHA;
 
 # all attributes are read-only
 
-has kind => ( is => 'ro', isa => 'Str', lazy_build => 1, init_arg => undef );
+requires 'kind';
 
 # these attributes can be generated, and need not to be set in the constructor
 has size => ( is => 'ro', isa => 'Int', lazy_build => 1, required => 0 );
@@ -50,13 +50,6 @@ sub BUILD {
 }
 
 # builders
-sub _build_kind {
-    my ($self) = @_;
-    my $class = ref $self;
-    $class =~ /^Glow::Object::(\w+)$/;
-    return lc $1;
-}
-
 sub _build_size {
     my ($self) = @_;
 
