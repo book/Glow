@@ -21,22 +21,22 @@ for my $args (
     is( $tree->content,             '',     'content' );
     is( $tree->size,                0,      'size' );
     is( $tree->sha1, '4b825dc642cb6eb9a060e54bf8d69288fbee4904', 'sha1' );
+    is_deeply( [ $tree->directory_entries ], [], 'directory_entries' );
 }
 
 diag 'tree with a single file';
-
 $content
     = "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\260";
+$entries = [
+    Glow::DirectoryEntry->new(
+        mode     => '100644',
+        filename => 'hello',
+        sha1     => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
+    )
+];
 for my $args (
-    [ content => $content ],
-    [   directory_entries => [
-            Glow::DirectoryEntry->new(
-                mode     => '100644',
-                filename => 'hello',
-                sha1     => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
-            )
-        ]
-    ],
+    [ content           => $content ],
+    [ directory_entries => $entries ],
     [ content_from_file => 't/content/tree_hello' ],
     )
 {
@@ -46,6 +46,7 @@ for my $args (
     is( $tree->content,             $content, 'content' );
     is( $tree->size,                33,       'size' );
     is( $tree->sha1, 'b52168be5ea341e918a9cbbb76012375170a439f', 'sha1' );
+    is_deeply( [ $tree->directory_entries ], $entries, 'directory_entries' );
 }
 
 done_testing;
