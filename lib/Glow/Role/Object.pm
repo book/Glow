@@ -2,10 +2,10 @@ package Glow::Role::Object;
 use Moose::Role;
 
 use Carp;
-use FileHandle;
-use IO::String;
+use Digest::SHA ();
+use FileHandle  ();
+use IO::String  ();
 use Fcntl qw( SEEK_END );
-use Digest::SHA;
 
 # all attributes are read-only
 
