@@ -1,13 +1,13 @@
 package Glow::Role::ContentBuilder::FromFile;
 use Moose::Role;
 
-with 'Glow::Role::ContentBuilder';
+requires '_content_from_trigger';
 
 has content_from_file => (
     is       => 'ro',
     isa      => 'Str',
     required => 0,
-    trigger  => sub { $_[0]->_trigger('content_from_file'); },
+    trigger  => sub { $_[0]->_content_from_trigger('content_from_file'); },
 );
 
 sub _build_fh_using_content_from_file {

@@ -7,9 +7,9 @@ use FileHandle  ();
 use IO::String  ();
 use Fcntl qw( SEEK_END );
 
-# all attributes are read-only
-
 requires 'kind';
+
+# all attributes are read-only
 
 # these attributes can be generated, and need not to be set in the constructor
 has size => (
@@ -28,8 +28,6 @@ has sha1 => (
     builder  => '_build_sha1',
 );
 
-# these attributes define the content, from which almost everything derives:
-# - raw content, as a string
 has content => (
     is        => 'ro',
     isa       => 'Str',
@@ -39,45 +37,27 @@ has content => (
     predicate => 'has_content',
 );
 
-# - a coderef that returns a filehandle pointing at the content beginning
-#   (BUILDARGS supports a 'source' parameter to pass in a filename instead)
-has content_source => (
-    is        => 'ro',
-    isa       => 'CodeRef',
-    required  => 0,
-    predicate => 'has_content_source'
+# set by the Glow::Role::ContentBuilder:: roles using _content_from_trigger
+has content_builder => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 0,
+    writer   => '_set_content_builder',
 );
 
-# turn the 'source' parameter into a 'content_source' parameter
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my $class = shift;
-    my $args  = $class->$orig(@_);
-    if( exists $args->{source} ) {
-        croak "Only one of argument source or content_source is allowed"
-            if exists $args->{content_source};
-        my $source = delete $args->{source};
-        die "$source does not exist" if !-e $source;
-        die "$source is unreadable"  if !-r $source;
-        $args->{content_source} = sub {
-            open my $fh, '<', $source or die "Can't open $source: $!";
-            return $fh;
-        };
-    }
-    return $args;
-};
-
-# we can only pass one of 'content' or 'content_source'
-sub BUILD {
-    my ($self) = @_;
-    croak "At least one but only one of attributes content or content_source is required"
-      if $self->has_content + $self->has_content_source != 1;
-}
+# everywhere, try as hard as we can to avoid actually building content
+# but use it if it's available
 
 # builders
+sub _build_content {
+    my ($self) = @_;
+    my $fh = $self->content_fh;
+    local $/;
+    return <$fh> // '';
+};
+
 sub _build_size {
     my ($self) = @_;
-
     return length $self->content if $self->has_content;
 
     my $fh = $self->content_fh;
@@ -98,19 +78,27 @@ sub _build_sha1 {
     return $sha1->hexdigest;
 }
 
-sub _build_content {
-    my ($self) = @_;
-    my $fh = $self->content_fh;
-    local $/;
-    return <$fh> // '';
-}
-
-# methods
 sub content_fh {
     my ($self) = @_;
-    return $self->has_content_source
-        ? $self->content_source->()
-        : IO::String->new( $self->content );
+    my $method = $self->content_builder
+        && '_build_fh_using_' . $self->content_builder;
+    return
+          $self->has_content ? IO::String->new( $self->content )
+        : $method            ? $self->$method
+        :                      IO::String->new('');
+}
+
+# private method
+sub _content_from_trigger {
+    my ( $self, $attribute ) = @_;
+    my $error
+        = $self->has_content
+        ? "Can't provide content with $attribute (content already provided)"
+        : $self->content_builder
+        ? "Can't set content_builder to $attribute (already set to ${\$self->content_builder})"
+        : '';
+    die $error if $error;
+    $self->_set_content_builder($attribute);
 }
 
 1;

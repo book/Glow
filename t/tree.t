@@ -12,8 +12,7 @@ diag 'empty tree';
 for my $args (
     [ content           => '' ],
     [ directory_entries => [] ],
-    [ source            => 't/content/empty' ],
-    [ content_source    => sub { IO::String->new('') } ],
+    [ content_from_file => 't/content/empty' ],
     )
 {
     $tree = Glow::Object::Tree->new(@$args);
@@ -38,8 +37,7 @@ for my $args (
             )
         ]
     ],
-    [ source         => 't/content/tree_hello' ],
-    [ content_source => sub { IO::String->new($content) } ],
+    [ content_from_file => 't/content/tree_hello' ],
     )
 {
     $tree = Glow::Object::Tree->new(@$args);
