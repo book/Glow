@@ -6,16 +6,20 @@ use IO::String;
 use Glow::Object::Tree;
 use Glow::DirectoryEntry;
 
-my ( $tree, $entries, $content );
+my $r;
+$r = Git::Repository->new( git_dir => 't/git' )
+    if eval { require Git::Repository; 1; };
 
-diag 'empty tree';
 for my $args (
+    [],
     [ content           => '' ],
     [ directory_entries => [] ],
     [ content_from_file => 't/content/empty' ],
+    ( [ git => $r, sha1 => '4b825dc642cb6eb9a060e54bf8d69288fbee4904' ] )x!! $r,
     )
 {
-    $tree = Glow::Object::Tree->new(@$args);
+    diag "empty tree with $args->[0]";
+    my $tree = Glow::Object::Tree->new(@$args);
     is( $tree->kind,                'tree', 'kind' );
     is( $tree->content_fh->getline, undef,  'content_fh' );
     is( $tree->content,             '',     'content' );
@@ -24,10 +28,9 @@ for my $args (
     is_deeply( [ $tree->directory_entries ], [], 'directory_entries' );
 }
 
-diag 'tree with a single file';
-$content
+my $content
     = "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\260";
-$entries = [
+my $entries = [
     Glow::DirectoryEntry->new(
         mode     => '100644',
         filename => 'hello',
@@ -38,9 +41,11 @@ for my $args (
     [ content           => $content ],
     [ directory_entries => $entries ],
     [ content_from_file => 't/content/tree_hello' ],
+    ( [ git => $r, sha1 => 'b52168be5ea341e918a9cbbb76012375170a439f' ] )x!! $r,
     )
 {
-    $tree = Glow::Object::Tree->new(@$args);
+    diag "hello tree with $args->[0]";
+    my $tree = Glow::Object::Tree->new(@$args);
     is( $tree->kind,                'tree',   'kind' );
     is( $tree->content_fh->getline, $content, 'content_fh' );
     is( $tree->content,             $content, 'content' );

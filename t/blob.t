@@ -4,8 +4,16 @@ use Test::More;
 
 use Glow::Object::Blob;
 
-for my $args ( [], [ content => '' ],
-    [ content_from_file => 't/content/empty' ], )
+my $r;
+$r = Git::Repository->new( git_dir => 't/git' )
+    if eval { require Git::Repository; 1; };
+
+for my $args (
+    [],
+    [ content => '' ],
+    [ content_from_file => 't/content/empty' ],
+    ( [ git => $r, sha1 => 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391' ] )x!! $r
+    )
 {
     my $blob;
 
@@ -26,10 +34,14 @@ for my $args ( [], [ content => '' ],
     is( $blob->content,             '',    'content' );
 }
 
-for my $args ( [ content => 'hello' ],
-    [ content_from_file => 't/content/hello' ], )
+for my $args (
+    [ content           => 'hello' ],
+    [ content_from_file => 't/content/hello' ],
+    ( [ git => $r, sha1 => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0' ] )x!! $r
+    )
 {
     my $blob;
+    diag "hello blob with $args->[0]";
 
     # read content in memory early
     $blob = Glow::Object::Blob->new(@$args);
