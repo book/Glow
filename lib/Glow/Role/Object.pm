@@ -10,6 +10,7 @@ use Fcntl qw( SEEK_END );
 requires 'kind';
 
 with 'Glow::Role::ContentBuilder::FromFile';
+with 'Glow::Role::ContentBuilder::FromGit';
 
 # all attributes are read-only
 
