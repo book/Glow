@@ -61,8 +61,16 @@ sub _build_size {
     return length $self->content if $self->has_content;
 
     my $fh = $self->content_fh;
-    $fh->seek( 0, SEEK_END );
-    return $fh->tell;
+    if( $fh->can('seek') ) {
+        $fh->seek( 0, SEEK_END );
+        return $fh->tell;
+    }
+    else {
+        my $size = 0;
+        my $buffer;
+        while ( my $read = $fh->sysread( $buffer, 8192 ) ) { $size += $read }
+        return $size;
+    }
 }
 
 sub _build_sha1 {
