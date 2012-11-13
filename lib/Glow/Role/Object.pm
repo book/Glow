@@ -9,6 +9,8 @@ use Fcntl qw( SEEK_END );
 
 requires 'kind';
 
+with 'Glow::Role::ContentBuilder::FromFile';
+
 # all attributes are read-only
 
 # these attributes can be generated, and need not to be set in the constructor

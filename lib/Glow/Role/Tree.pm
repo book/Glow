@@ -3,7 +3,6 @@ use Moose::Role;
 use Carp;
 
 with 'Glow::Role::Object';
-with 'Glow::Role::ContentBuilder::FromFile';
 with 'Glow::Role::ContentBuilder::FromDirectoryEntries';
 
 1;
