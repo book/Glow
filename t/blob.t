@@ -16,6 +16,7 @@ for my $args (
     )
 {
     my $blob;
+    diag 'empty blob with ' . ( $args->[0] || 'nothing' );
 
     # read content in memory early
     $blob = Glow::Object::Blob->new(@$args);

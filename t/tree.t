@@ -18,7 +18,7 @@ for my $args (
     ( [ git => $r, sha1 => '4b825dc642cb6eb9a060e54bf8d69288fbee4904' ] )x!! $r,
     )
 {
-    diag "empty tree with $args->[0]";
+    diag 'empty tree with ' . ( $args->[0] || 'nothing' );
     my $tree = Glow::Object::Tree->new(@$args);
     is( $tree->kind,                'tree', 'kind' );
     is( $tree->content_fh->getline, undef,  'content_fh' );
