@@ -12,6 +12,14 @@ with 'Glow::Role::ContentBuilder::FromFile';
 with 'Glow::Role::ContentBuilder::FromClosure';
 with 'Glow::Role::ContentBuilder::FromGit';
 
+# register kind to class mapping
+use Glow::Mapper;
+
+sub register_mapping {
+    my ($self) = @_;
+    Glow::Mapper->register_mapping( $self->kind, $self->meta->name );
+}
+
 # all attributes are read-only
 
 # these attributes can be generated, and need not to be set in the constructor
