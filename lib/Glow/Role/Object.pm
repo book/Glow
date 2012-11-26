@@ -1,7 +1,6 @@
 package Glow::Role::Object;
 use Moose::Role;
 
-use Carp;
 use Digest::SHA ();
 use FileHandle  ();
 use IO::String  ();
