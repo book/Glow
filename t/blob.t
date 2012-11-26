@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
+use t::Util;
 
 use Glow::Object::Blob;
 
@@ -10,9 +11,11 @@ $r = Git::Repository->new( git_dir => 't/git' )
 
 for my $args (
     [],
-    [ content => '' ],
-    [ content_from_file => 't/content/empty' ],
-    ( [ git => $r, sha1 => 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391' ] )x!! $r
+    [ content                 => '' ],
+    [ content_from_file       => 't/content/empty' ],
+    [ content_fh_from_closure => make_closure('t/content/empty') ],
+    ( [ git => $r, sha1 => 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391' ] )
+        x !!$r
     )
 {
     my $blob;
@@ -36,9 +39,11 @@ for my $args (
 }
 
 for my $args (
-    [ content           => 'hello' ],
-    [ content_from_file => 't/content/hello' ],
-    ( [ git => $r, sha1 => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0' ] )x!! $r
+    [ content                 => 'hello' ],
+    [ content_from_file       => 't/content/hello' ],
+    [ content_fh_from_closure => make_closure('t/content/hello') ],
+    ( [ git => $r, sha1 => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0' ] )
+        x !!$r
     )
 {
     my $blob;

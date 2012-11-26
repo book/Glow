@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use IO::String;
+use t::Util;
 
 use Glow::Object::Commit;
 use Glow::Actor;
@@ -30,11 +30,13 @@ my $info    = {
     comment => 'hello',
     encoding => 'utf-8',
 };
+my $closure = make_closure('t/content/commit_hello');
 
 for my $args (
     [ content           => $content ],
     [ content_from_file => $file ],
     [ commit_info       => $info ],
+    [ content_fh_from_closure => $closure],
     ( [ git => $r, sha1 => 'ef25e81ba86b7df16956c974c8a9c1ff2eca1326' ] )x!! $r,
     )
 {

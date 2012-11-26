@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use IO::String;
+use t::Util;
 
 use Glow::Object::Tag;
 use Glow::Actor;
@@ -26,11 +26,13 @@ my $info    = {
     comment => 'bonjour',
     encoding => 'utf-8',
 };
+my $closure = make_closure('t/content/tag_world');
 
 for my $args (
     [ content           => $content ],
     [ content_from_file => $file ],
     [ tag_info          => $info ],
+    [ content_fh_from_closure => $closure ],
     ( [ git => $r, sha1 => 'f5c10c1a841419d3b1db0c3e0c42b554f9e1eeb2' ] )x!! $r,
     )
 {

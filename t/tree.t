@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use IO::String;
+use t::Util;
 
 use Glow::Object::Tree;
 use Glow::DirectoryEntry;
@@ -15,6 +15,7 @@ for my $args (
     [ content           => '' ],
     [ directory_entries => [] ],
     [ content_from_file => 't/content/empty' ],
+    [ content_fh_from_closure => make_closure('t/content/empty') ],
     ( [ git => $r, sha1 => '4b825dc642cb6eb9a060e54bf8d69288fbee4904' ] )x!! $r,
     )
 {
@@ -41,6 +42,7 @@ for my $args (
     [ content           => $content ],
     [ directory_entries => $entries ],
     [ content_from_file => 't/content/tree_hello' ],
+    [ content_fh_from_closure => make_closure('t/content/tree_hello') ],
     ( [ git => $r, sha1 => 'b52168be5ea341e918a9cbbb76012375170a439f' ] )x!! $r,
     )
 {
