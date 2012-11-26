@@ -3,7 +3,9 @@ use Moose;
 
 with 'Glow::Role::Blob';
 
-sub kind { 'blob' }
+sub kind {'blob'}
+
+__PACKAGE__->register_mapping;
 
 1;
 

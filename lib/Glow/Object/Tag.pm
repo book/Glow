@@ -5,5 +5,7 @@ with 'Glow::Role::Tag';
 
 sub kind {'tag'}
 
+__PACKAGE__->register_mapping;
+
 1;
 
