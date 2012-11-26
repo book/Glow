@@ -7,6 +7,9 @@ use Glow::Object::Tag;
 use Glow::Actor;
 use DateTime;
 
+is( Glow::Mapper->kind2class('tag'),
+    'Glow::Object::Tag', 'tag => Glow::Object::Tag' );
+
 my $r;
 $r = Git::Repository->new( git_dir => 't/git' )
     if eval { require Git::Repository; 1; };

@@ -5,6 +5,9 @@ use t::Util;
 
 use Glow::Object::Blob;
 
+is( Glow::Mapper->kind2class('blob'),
+    'Glow::Object::Blob', 'blob => Glow::Object::Blob' );
+
 my $r;
 $r = Git::Repository->new( git_dir => 't/git' )
     if eval { require Git::Repository; 1; };

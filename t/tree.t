@@ -6,6 +6,9 @@ use t::Util;
 use Glow::Object::Tree;
 use Glow::DirectoryEntry;
 
+is( Glow::Mapper->kind2class('tree'),
+    'Glow::Object::Tree', 'tree => Glow::Object::Tree' );
+
 my $r;
 $r = Git::Repository->new( git_dir => 't/git' )
     if eval { require Git::Repository; 1; };

@@ -7,6 +7,9 @@ use Glow::Object::Commit;
 use Glow::Actor;
 use DateTime;
 
+is( Glow::Mapper->kind2class('commit'),
+    'Glow::Object::Commit', 'commit => Glow::Object::Commit' );
+
 my $r;
 $r = Git::Repository->new( git_dir => 't/git' )
     if eval { require Git::Repository; 1; };
