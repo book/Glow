@@ -1,75 +1,45 @@
 use strict;
 use warnings;
 use Test::More;
-use t::Util;
+use t::TestData;
+our ( %objects, $git );
 
 use Glow::Object::Blob;
 
 is( Glow::Mapper->kind2class('blob'),
     'Glow::Object::Blob', 'blob => Glow::Object::Blob' );
 
-my $r;
-$r = Git::Repository->new( git_dir => 't/git' )
-    if eval { require Git::Repository; 1; };
+for my $test ( @{ $objects{blob} } ) {
+    for my $args (
+        [ content                 => $test->{content} ],
+        [ content_from_file       => $test->{file} ],
+        [ content_fh_from_closure => $test->{closure} ],
+        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
+        )
+    {
+        diag "$test->{desc} with $args->[0]";
+        my $blob;
 
-for my $args (
-    [],
-    [ content                 => '' ],
-    [ content_from_file       => 't/content/empty' ],
-    [ content_fh_from_closure => make_closure('t/content/empty') ],
-    ( [ git => $r, sha1 => 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391' ] )
-        x !!$r
-    )
-{
-    my $blob;
-    diag 'empty blob with ' . ( $args->[0] || 'nothing' );
+        # read content in memory early
+        $blob = Glow::Object::Blob->new(@$args);
+        is( $blob->kind,                $test->{kind},     'kind' );
+        is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
+        is( $blob->content,             $test->{content},  'content' );
+        is( $blob->size,                $test->{size},     'size' );
+        is( $blob->sha1,                $test->{sha1},     'sha1' );
 
-    # read content in memory early
-    $blob = Glow::Object::Blob->new(@$args);
-    is( $blob->kind,                'blob', 'kind' );
-    is( $blob->content_fh->getline, undef,  'content_fh' );
-    is( $blob->content,             '',     'content' );
-    is( $blob->size,                0,      'size' );
-    is( $blob->sha1, 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391', 'sha1' );
-
-    # do not to read content in memory until the last test
-    $blob = Glow::Object::Blob->new(@$args);
-    is( $blob->kind, 'blob',                                     'kind' );
-    is( $blob->sha1, 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391', 'sha1' );
-    is( $blob->size, 0,                                          'size' );
-    is( $blob->content_fh->getline, undef, 'content_fh' );
-    is( $blob->content,             '',    'content' );
-}
-
-for my $args (
-    [ content                 => 'hello' ],
-    [ content_from_file       => 't/content/hello' ],
-    [ content_fh_from_closure => make_closure('t/content/hello') ],
-    ( [ git => $r, sha1 => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0' ] )
-        x !!$r
-    )
-{
-    my $blob;
-    diag "hello blob with $args->[0]";
-
-    # read content in memory early
-    $blob = Glow::Object::Blob->new(@$args);
-    is( $blob->kind,                'blob',  'kind' );
-    is( $blob->content_fh->getline, 'hello', 'content_fh' );
-    is( $blob->content,             'hello', 'content' );
-    is( $blob->size,                5,       'size' );
-    is( $blob->sha1, 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0', 'sha1' );
-
-    # do not to read content in memory until the last test
-    $blob = Glow::Object::Blob->new(@$args);
-    is( $blob->kind, 'blob',                                     'kind' );
-    is( $blob->sha1, 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0', 'sha1' );
-    is( $blob->size, 5,                                          'size' );
-    is( $blob->content_fh->getline, 'hello', 'content_fh' );
-    is( $blob->content,             'hello', 'content' );
+        # do not to read content in memory until the last test
+        $blob = Glow::Object::Blob->new(@$args);
+        is( $blob->kind,                $test->{kind},     'kind' );
+        is( $blob->sha1,                $test->{sha1},     'sha1' );
+        is( $blob->size,                $test->{size},     'size' );
+        is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
+        is( $blob->content,             $test->{content},  'content' );
+    }
 }
 
 # test some error conditions
+diag 'error conditions';
 my @errors = (
     [   [ content => 'hello', content_from_file => 't/content/hello' ] =>
             qr/^Can't provide content with content_from_file \(content already provided\)/,

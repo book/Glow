@@ -1,7 +1,8 @@
 use strict;
 use warnings;
 use Test::More;
-use t::Util;
+use t::TestData;
+our ( %objects, $git );
 
 use Glow::Object::Commit;
 use Glow::Actor;
