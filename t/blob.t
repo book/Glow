@@ -2,13 +2,30 @@ use strict;
 use warnings;
 use Test::More;
 use t::TestData;
-our %objects;
+our ( %objects, $git );
 
 use Glow::Object::Blob;
 is( Glow::Mapper->kind2class('blob'),
     'Glow::Object::Blob', 'blob => Glow::Object::Blob' );
 
-test_blob($_) for @{ $objects{blob} };
+for my $test ( @{ $objects{blob} } ) {
+    for my $args (
+        [ content                 => $test->{content} ],
+        [ content_from_file       => $test->{file} ],
+        [ content_fh_from_closure => $test->{closure} ],
+        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
+        )
+    {
+        diag "$test->{desc} with $args->[0]";
+        my $blob;
+
+        $blob = Glow::Object::Blob->new(@$args);
+        test_blob_mem($blob, $test);
+
+        $blob = Glow::Object::Blob->new(@$args);
+        test_blob_fh($blob, $test);
+    }
+}
 
 # test some error conditions
 diag 'error conditions';

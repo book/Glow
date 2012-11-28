@@ -131,38 +131,28 @@ $git = eval { Git::Repository->new( git_dir => 't/git' ) }
     if eval { require Git::Repository; 1; };
 
 # test routines
-sub test_blob {
-    my ($test) = @_;
-    require Glow::Object::Blob;
+sub test_blob_mem {
+    my ( $blob, $test ) = @_;
 
-    for my $args (
-        [ content                 => $test->{content} ],
-        [ content_from_file       => $test->{file} ],
-        [ content_fh_from_closure => $test->{closure} ],
-        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
-        )
-    {
-        diag "$test->{desc} with $args->[0]";
-        my $blob;
+    # read content in memory early
+    isa_ok( $blob, 'Glow::Object::Blob' );
+    is( $blob->kind,                $test->{kind},     'kind' );
+    is( $blob->content,             $test->{content},  'content' );
+    is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
+    is( $blob->size,                $test->{size},     'size' );
+    is( $blob->sha1,                $test->{sha1},     'sha1' );
+}
 
-        # read content in memory early
-        $blob = Glow::Object::Blob->new(@$args);
-        isa_ok( $blob, 'Glow::Object::Blob' );
-        is( $blob->kind,                $test->{kind},     'kind' );
-        is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
-        is( $blob->content,             $test->{content},  'content' );
-        is( $blob->size,                $test->{size},     'size' );
-        is( $blob->sha1,                $test->{sha1},     'sha1' );
+sub test_blob_fh  {
+    my ( $blob, $test ) = @_;
 
-        # do not to read content in memory until the last test
-        $blob = Glow::Object::Blob->new(@$args);
-        isa_ok( $blob, 'Glow::Object::Blob' );
-        is( $blob->kind,                $test->{kind},     'kind' );
-        is( $blob->sha1,                $test->{sha1},     'sha1' );
-        is( $blob->size,                $test->{size},     'size' );
-        is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
-        is( $blob->content,             $test->{content},  'content' );
-    }
+    # do not to read content in memory until the last test
+    isa_ok( $blob, 'Glow::Object::Blob' );
+    is( $blob->kind,                $test->{kind},     'kind' );
+    is( $blob->sha1,                $test->{sha1},     'sha1' );
+    is( $blob->size,                $test->{size},     'size' );
+    is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
+    is( $blob->content,             $test->{content},  'content' );
 }
 
 sub test_tree {
