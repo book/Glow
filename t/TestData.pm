@@ -156,32 +156,20 @@ sub test_blob_fh  {
 }
 
 sub test_tree {
-    my ($test) = @_;
-    require Glow::Object::Tree;
+    my ( $tree, $test ) = @_;
 
-    for my $args (
-        [ content                 => $test->{content} ],
-        [ directory_entries       => $test->{directory_entries} ],
-        [ content_from_file       => $test->{file} ],
-        [ content_fh_from_closure => $test->{closure} ],
-        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
-        )
-    {
-        diag "$test->{desc} with $args->[0]";
-
-        my $tree = Glow::Object::Tree->new(@$args);
-        is( $tree->kind, $test->{kind}, 'kind' );
-        is( join( '', $tree->content_fh->getlines ),
-            $test->{content}, 'content_fh' );
-        is( $tree->content, $test->{content}, 'content' );
-        is( $tree->size,    $test->{size},    'size' );
-        is( $tree->sha1,    $test->{sha1},    'sha1' );
-        is_deeply(
-            [ $tree->directory_entries ],
-            $test->{directory_entries},
-            'directory_entries'
-        );
-    }
+    isa_ok( $tree, 'Glow::Object::Tree' );
+    is( join( '', $tree->content_fh->getlines ),
+        $test->{content}, 'content_fh' );
+    is( $tree->kind,    $test->{kind}, 'kind' );
+    is( $tree->content, $test->{content}, 'content' );
+    is( $tree->size,    $test->{size},    'size' );
+    is( $tree->sha1,    $test->{sha1},    'sha1' );
+    is_deeply(
+        [ $tree->directory_entries ],
+        $test->{directory_entries},
+        'directory_entries'
+    );
 }
 
 sub test_commit {
