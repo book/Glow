@@ -2,13 +2,26 @@ use strict;
 use warnings;
 use Test::More;
 use t::TestData;
-our %objects;
+our ( %objects, $git );
 
 use Glow::Object::Commit;
-
 is( Glow::Mapper->kind2class('commit'),
     'Glow::Object::Commit', 'commit => Glow::Object::Commit' );
 
-test_commit($_) for @{ $objects{commit} };
+for my $test ( @{ $objects{commit} } ) {
+    for my $args (
+        [ content                 => $test->{content} ],
+        [ content_from_file       => $test->{file} ],
+        [ commit_info             => $test->{commit_info} ],
+        [ content_fh_from_closure => $test->{closure} ],
+        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
+        )
+    {
+        diag "$test->{desc} with $args->[0]";
+
+        my $commit = Glow::Object::Commit->new(@$args);
+        test_commit( $commit, $test );
+    }
+}
 
 done_testing;
