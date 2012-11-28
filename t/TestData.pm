@@ -83,6 +83,35 @@ COMMIT
             sha1 => 'ef25e81ba86b7df16956c974c8a9c1ff2eca1326',
         }
     ],
+    tag => [
+        {   desc     => 'world tag',
+            tag_info => {
+                object => 'ef25e81ba86b7df16956c974c8a9c1ff2eca1326',
+                type   => 'commit',
+                tag    => 'world',
+                tagger => Glow::Actor->new(
+                    name  => 'Philippe Bruhat (BooK)',
+                    email => 'book@cpan.org'
+                ),
+                tagged_time => DateTime->from_epoch(
+                    epoch     => 1352846959,
+                    time_zone => '+0100'
+                ),
+                comment  => 'bonjour',
+                encoding => 'utf-8',
+            },
+            content => << 'TAG',
+object ef25e81ba86b7df16956c974c8a9c1ff2eca1326
+type commit
+tag world
+tagger Philippe Bruhat (BooK) <book@cpan.org> 1352846959 +0100
+
+bonjour
+TAG
+            file => 't/content/tag_world',
+            sha1 => 'f5c10c1a841419d3b1db0c3e0c42b554f9e1eeb2',
+        }
+    ],
 );
 
 # add extra information
