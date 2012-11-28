@@ -5,6 +5,7 @@ use Glow::Object::Commit;
 use Glow::Actor;
 use DateTime;
 
+# helper routines
 sub make_closure {
     my $filename = shift;
     return sub {
@@ -128,5 +129,40 @@ for my $kind ( keys %objects ) {
 our $git;
 $git = eval { Git::Repository->new( git_dir => 't/git' ) }
     if eval { require Git::Repository; 1; };
+
+# test routines
+sub test_blob {
+    my ($test) = @_;
+    require Glow::Object::Blob;
+
+    for my $args (
+        [ content                 => $test->{content} ],
+        [ content_from_file       => $test->{file} ],
+        [ content_fh_from_closure => $test->{closure} ],
+        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
+        )
+    {
+        diag "$test->{desc} with $args->[0]";
+        my $blob;
+
+        # read content in memory early
+        $blob = Glow::Object::Blob->new(@$args);
+        isa_ok( $blob, 'Glow::Object::Blob' );
+        is( $blob->kind,                $test->{kind},     'kind' );
+        is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
+        is( $blob->content,             $test->{content},  'content' );
+        is( $blob->size,                $test->{size},     'size' );
+        is( $blob->sha1,                $test->{sha1},     'sha1' );
+
+        # do not to read content in memory until the last test
+        $blob = Glow::Object::Blob->new(@$args);
+        isa_ok( $blob, 'Glow::Object::Blob' );
+        is( $blob->kind,                $test->{kind},     'kind' );
+        is( $blob->sha1,                $test->{sha1},     'sha1' );
+        is( $blob->size,                $test->{size},     'size' );
+        is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
+        is( $blob->content,             $test->{content},  'content' );
+    }
+}
 
 1;
