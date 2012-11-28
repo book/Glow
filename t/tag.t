@@ -8,7 +8,21 @@ use Glow::Object::Tag;
 is( Glow::Mapper->kind2class('tag'),
     'Glow::Object::Tag', 'tag => Glow::Object::Tag' );
 
-test_tag($_) for @{ $objects{tag} };
+for my $test ( @{ $objects{tag} } ) {
+    for my $args (
+        [ content                 => $test->{content} ],
+        [ content_from_file       => $test->{file} ],
+        [ tag_info                => $test->{tag_info} ],
+        [ content_fh_from_closure => $test->{closure} ],
+        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
+        )
+    {
+        diag "$test->{desc} with $args->[0]";
+
+        my $tag = Glow::Object::Tag->new(@$args);
+        test_tag( $tag, $test );
+    }
+}
 
 done_testing;
 
