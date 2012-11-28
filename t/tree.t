@@ -20,11 +20,12 @@ for my $test ( @{ $objects{tree} } ) {
     {
         diag "$test->{desc} with $args->[0]";
         my $tree = Glow::Object::Tree->new(@$args);
-        is( $tree->kind,                $test->{kind},     'kind' );
-        is( $tree->content_fh->getline, $test->{lines}[0], 'content_fh' );
-        is( $tree->content,             $test->{content},  'content' );
-        is( $tree->size,                $test->{size},     'size' );
-        is( $tree->sha1,                $test->{sha1},     'sha1' );
+        is( $tree->kind, $test->{kind}, 'kind' );
+        is( join( '', $tree->content_fh->getlines ),
+            $test->{content}, 'content_fh' );
+        is( $tree->content, $test->{content}, 'content' );
+        is( $tree->size,    $test->{size},    'size' );
+        is( $tree->sha1,    $test->{sha1},    'sha1' );
         is_deeply(
             [ $tree->directory_entries ],
             $test->{directory_entries},
