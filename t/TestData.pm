@@ -1,6 +1,9 @@
 use strict;
 use warnings;
 use Glow::DirectoryEntry;
+use Glow::Object::Commit;
+use Glow::Actor;
+use DateTime;
 
 sub make_closure {
     my $filename = shift;
@@ -45,6 +48,40 @@ our %objects = (
             sha1 => 'b52168be5ea341e918a9cbbb76012375170a439f',
         }
 
+    ],
+    commit => [
+        {   desc        => 'hello commit',
+            commit_info => {
+                tree_sha1 => 'b52168be5ea341e918a9cbbb76012375170a439f',
+                author    => Glow::Actor->new(
+                    name  => 'Philippe Bruhat (BooK)',
+                    email => 'book@cpan.org'
+                ),
+                authored_time => DateTime->from_epoch(
+                    epoch     => 1352762713,
+                    time_zone => '+0100'
+                ),
+                committer => Glow::Actor->new(
+                    name  => 'Philippe Bruhat (BooK)',
+                    email => 'book@cpan.org'
+                ),
+                committed_time => DateTime->from_epoch(
+                    epoch     => 1352764647,
+                    time_zone => '+0100'
+                ),
+                comment  => 'hello',
+                encoding => 'utf-8',
+            },
+            content => << 'COMMIT',
+tree b52168be5ea341e918a9cbbb76012375170a439f
+author Philippe Bruhat (BooK) <book@cpan.org> 1352762713 +0100
+committer Philippe Bruhat (BooK) <book@cpan.org> 1352764647 +0100
+
+hello
+COMMIT
+            file => 't/content/commit_hello',
+            sha1 => 'ef25e81ba86b7df16956c974c8a9c1ff2eca1326',
+        }
     ],
 );
 
