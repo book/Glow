@@ -47,8 +47,24 @@ our %objects = (
                 "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\260",
             file => 't/content/tree_hello',
             sha1 => 'b52168be5ea341e918a9cbbb76012375170a439f',
-        }
-
+        },
+        {   desc              => 'tree with subtree',
+            directory_entries => [
+                Glow::DirectoryEntry->new(
+                    mode     => '100644',
+                    filename => 'hello',
+                    sha1     => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
+                ),
+                Glow::DirectoryEntry->new(
+                    mode     => '40000',
+                    filename => 'subdir',
+                    sha1     => 'b52168be5ea341e918a9cbbb76012375170a439f'
+                ),
+            ],
+            content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
+            file    => 't/content/tree_subdir',
+            sha1    => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+        },
     ],
     commit => [
         {   desc        => 'hello commit',
