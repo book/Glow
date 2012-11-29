@@ -4,14 +4,18 @@ use Moose::Role;
 requires '_content_from_trigger';
 
 has directory_entries => (
-    is         => 'ro',
-    isa        => 'ArrayRef[Glow::DirectoryEntry]',
-    lazy       => 1,
-    required   => 0,
-    predicate  => 'has_directory_entries',
-    builder    => '_build_directory_entries',
-    auto_deref => 1,
-    trigger  => sub { $_[0]->_content_from_trigger( 'directory_entries' ) },
+    is          => 'ro',
+    isa         => 'ArrayRef[Glow::DirectoryEntry]',
+    lazy        => 1,
+    required    => 0,
+    predicate   => 'has_directory_entries',
+    builder     => '_build_directory_entries',
+    auto_deref  => 1,
+    trigger     => sub { $_[0]->_content_from_trigger('directory_entries'); },
+    initializer => sub {
+        my ( $self, $entries, $writer ) = @_;
+        $writer->( [ sort { $a->filename cmp $b->filename } @$entries ] );
+    },
 );
 
 sub _build_directory_entries {
