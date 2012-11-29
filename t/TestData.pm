@@ -65,6 +65,23 @@ our %objects = (
             file    => 't/content/tree_subdir',
             sha1    => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
         },
+        {   desc              => 'tree with subtree (unsorted directory_entries)',
+            directory_entries => [
+                Glow::DirectoryEntry->new(
+                    mode     => '40000',
+                    filename => 'subdir',
+                    sha1     => 'b52168be5ea341e918a9cbbb76012375170a439f'
+                ),
+                Glow::DirectoryEntry->new(
+                    mode     => '100644',
+                    filename => 'hello',
+                    sha1     => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
+                ),
+            ],
+            content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
+            file    => 't/content/tree_subdir',
+            sha1    => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+        },
     ],
     commit => [
         {   desc        => 'hello commit',
@@ -177,13 +194,15 @@ sub test_tree {
     isa_ok( $tree, 'Glow::Object::Tree' );
     is( join( '', $tree->content_fh->getlines ),
         $test->{content}, 'content_fh' );
-    is( $tree->kind,    $test->{kind}, 'kind' );
+    is( $tree->kind,    $test->{kind},    'kind' );
     is( $tree->content, $test->{content}, 'content' );
     is( $tree->size,    $test->{size},    'size' );
     is( $tree->sha1,    $test->{sha1},    'sha1' );
     is_deeply(
         [ $tree->directory_entries ],
-        $test->{directory_entries},
+        [   sort { $a->filename cmp $b->filename }
+                @{ $test->{directory_entries} }
+        ],
         'directory_entries'
     );
 }
