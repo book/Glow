@@ -26,17 +26,17 @@ my %test_func = (
 
 for my $test ( map @$_, values %objects ) {
     no strict 'refs';
-    diag "$test->{kind} $test->{sha1}";
+    diag "$test->{kind} $test->{digest}";
 
     # load the object
-    my $object = $loose_r->get_object( $test->{sha1} );
+    my $object = $loose_r->get_object( $test->{digest} );
     &$_( $object, $test ) for @{ $test_func{ $test->{kind} } };
 
     # save the object
     $loose_w->put_object( $object );
 
     # read it again
-    $object = $loose_w->get_object( $test->{sha1} );
+    $object = $loose_w->get_object( $test->{digest} );
     &$_( $object, $test ) for @{ $test_func{ $test->{kind} } };
 }
 

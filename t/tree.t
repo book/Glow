@@ -15,7 +15,7 @@ for my $test ( @{ $objects{tree} } ) {
         [ directory_entries       => $test->{directory_entries} ],
         [ content_from_file       => $test->{file} ],
         [ content_fh_from_closure => $test->{closure} ],
-        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
+        ( [ git => $git, digest => $test->{digest} ] )x!! $git
         )
     {
         diag "$test->{desc} with $args->[0]";

@@ -20,12 +20,12 @@ our %objects = (
         {   desc    => 'empty blob',
             content => '',
             file    => 't/content/empty',
-            sha1    => 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391',
+            digest  => 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391',
         },
         {   desc    => 'hello blob',
             content => 'hello',
             file    => 't/content/hello',
-            sha1    => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0',
+            digest  => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0',
         },
     ],
     tree => [
@@ -33,60 +33,60 @@ our %objects = (
             directory_entries => [],
             content           => '',
             file              => 't/content/empty',
-            sha1              => '4b825dc642cb6eb9a060e54bf8d69288fbee4904',
+            digest            => '4b825dc642cb6eb9a060e54bf8d69288fbee4904',
         },
         {   desc              => 'hello tree',
             directory_entries => [
                 Glow::DirectoryEntry->new(
                     mode     => '100644',
                     filename => 'hello',
-                    sha1     => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
+                    digest   => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
                 )
             ],
             content =>
                 "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\260",
             file => 't/content/tree_hello',
-            sha1 => 'b52168be5ea341e918a9cbbb76012375170a439f',
+            digest => 'b52168be5ea341e918a9cbbb76012375170a439f',
         },
         {   desc              => 'tree with subtree',
             directory_entries => [
                 Glow::DirectoryEntry->new(
                     mode     => '100644',
                     filename => 'hello',
-                    sha1     => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
+                    digest   => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
                 ),
                 Glow::DirectoryEntry->new(
                     mode     => '40000',
                     filename => 'subdir',
-                    sha1     => 'b52168be5ea341e918a9cbbb76012375170a439f'
+                    digest   => 'b52168be5ea341e918a9cbbb76012375170a439f'
                 ),
             ],
             content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
             file    => 't/content/tree_subdir',
-            sha1    => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+            digest  => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
         },
         {   desc              => 'tree with subtree (unsorted directory_entries)',
             directory_entries => [
                 Glow::DirectoryEntry->new(
                     mode     => '40000',
                     filename => 'subdir',
-                    sha1     => 'b52168be5ea341e918a9cbbb76012375170a439f'
+                    digest   => 'b52168be5ea341e918a9cbbb76012375170a439f'
                 ),
                 Glow::DirectoryEntry->new(
                     mode     => '100644',
                     filename => 'hello',
-                    sha1     => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
+                    digest   => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
                 ),
             ],
             content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
             file    => 't/content/tree_subdir',
-            sha1    => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+            digest  => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
         },
     ],
     commit => [
         {   desc        => 'hello commit',
             commit_info => {
-                tree_sha1 => 'b52168be5ea341e918a9cbbb76012375170a439f',
+                tree_digest => 'b52168be5ea341e918a9cbbb76012375170a439f',
                 author    => Glow::Actor->new(
                     name  => 'Philippe Bruhat (BooK)',
                     email => 'book@cpan.org'
@@ -113,8 +113,8 @@ committer Philippe Bruhat (BooK) <book@cpan.org> 1352764647 +0100
 
 hello
 COMMIT
-            file => 't/content/commit_hello',
-            sha1 => 'ef25e81ba86b7df16956c974c8a9c1ff2eca1326',
+            file   => 't/content/commit_hello',
+            digest => 'ef25e81ba86b7df16956c974c8a9c1ff2eca1326',
         }
     ],
     tag => [
@@ -142,8 +142,8 @@ tagger Philippe Bruhat (BooK) <book@cpan.org> 1352846959 +0100
 
 bonjour
 TAG
-            file => 't/content/tag_world',
-            sha1 => 'f5c10c1a841419d3b1db0c3e0c42b554f9e1eeb2',
+            file   => 't/content/tag_world',
+            digest => 'f5c10c1a841419d3b1db0c3e0c42b554f9e1eeb2',
         }
     ],
 );
@@ -173,7 +173,7 @@ sub test_blob_mem {
     is( $blob->content,             $test->{content},  'content' );
     is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
     is( $blob->size,                $test->{size},     'size' );
-    is( $blob->sha1,                $test->{sha1},     'sha1' );
+    is( $blob->digest,              $test->{digest},   'digest' );
 }
 
 sub test_blob_fh  {
@@ -182,7 +182,7 @@ sub test_blob_fh  {
     # do not to read content in memory until the last test
     isa_ok( $blob, 'Glow::Object::Blob' );
     is( $blob->kind,                $test->{kind},     'kind' );
-    is( $blob->sha1,                $test->{sha1},     'sha1' );
+    is( $blob->digest,              $test->{digest},   'digest' );
     is( $blob->size,                $test->{size},     'size' );
     is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
     is( $blob->content,             $test->{content},  'content' );
@@ -197,7 +197,7 @@ sub test_tree {
     is( $tree->kind,    $test->{kind},    'kind' );
     is( $tree->content, $test->{content}, 'content' );
     is( $tree->size,    $test->{size},    'size' );
-    is( $tree->sha1,    $test->{sha1},    'sha1' );
+    is( $tree->digest,  $test->{digest},  'digest' );
     is_deeply(
         [ $tree->directory_entries ],
         [   sort { $a->filename cmp $b->filename }
@@ -216,11 +216,11 @@ sub test_commit {
         $test->{content}, 'content_fh' );
     is( $commit->content, $test->{content}, 'content' );
     is( $commit->size,    $test->{size},    'size' );
-    is( $commit->sha1,    $test->{sha1},    'sha1' );
+    is( $commit->digest,  $test->{digest},  'digest' );
 
     # can't use is_deeply here
     my $commit_info = $commit->commit_info;
-    for my $attr (qw( tree_sha1 authored_time committed_time comment )) {
+    for my $attr (qw( tree_digest authored_time committed_time comment )) {
         is( $commit_info->{$attr},
             $test->{commit_info}{$attr},
             "commit_info $attr"
@@ -232,9 +232,9 @@ sub test_commit {
             "commit_info $attr"
         );
     }
-    is( join( ' ', @{ $commit_info->{parents_sha1} } ),
-        join( ' ', @{ $test->{commit_info}{parents_sha1} || [] } ),
-        'commit_info parents_sha1'
+    is( join( ' ', @{ $commit_info->{parents_digest} } ),
+        join( ' ', @{ $test->{commit_info}{parents_digest} || [] } ),
+        'commit_info parents_digest'
     );
 }
 
@@ -248,7 +248,7 @@ sub test_tag {
         $test->{content}, 'content_fh' );
     is( $tag->content, $test->{content}, 'content' );
     is( $tag->size,    $test->{size},    'size' );
-    is( $tag->sha1,    $test->{sha1},    'sha1' );
+    is( $tag->digest,  $test->{digest},  'digest' );
 
     # can't use is_deeply here
     my $tag_info = $tag->tag_info;

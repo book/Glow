@@ -31,13 +31,13 @@ sub _build_directory_entries {
         my $null_index = index( $content, "\0" );
         my $filename = substr( $content, 0, $null_index );
         $content = substr( $content, $null_index + 1 );
-        my $sha1 = unpack( 'H*', substr( $content, 0, 20 ) );
+        my $digest = unpack( 'H*', substr( $content, 0, 20 ) );
         $content = substr( $content, 20 );
         push @directory_entries,
             Glow::DirectoryEntry->new(
             mode     => $mode,
             filename => $filename,
-            sha1     => $sha1,
+            digest   => $digest,
             );
     }
     return \@directory_entries;

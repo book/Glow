@@ -31,14 +31,6 @@ has size => (
     builder  => '_build_size',
 );
 
-has sha1 => (
-    is       => 'ro',
-    isa      => 'Str',
-    lazy     => 1,
-    required => 0,
-    builder  => '_build_sha1',
-);
-
 has content => (
     is        => 'ro',
     isa       => 'Str',
@@ -82,19 +74,6 @@ sub _build_size {
         while ( my $read = $fh->sysread( $buffer, 8192 ) ) { $size += $read }
         return $size;
     }
-}
-
-sub _build_sha1 {
-    my ($self) = @_;
-    my $sha1 = Digest::SHA->new(1);
-    $sha1->add( $self->kind . ' ' . $self->size . "\0" );
-    if ( $self->has_content ) {
-        $sha1->add( $self->content );
-    }
-    else {
-        $sha1->addfile( $self->content_fh );
-    }
-    return $sha1->hexdigest;
 }
 
 sub content_fh {

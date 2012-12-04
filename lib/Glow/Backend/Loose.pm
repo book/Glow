@@ -16,13 +16,13 @@ has 'directory' => (
 );
 
 sub get_object {
-    my ( $self, $sha1 ) = @_;
+    my ( $self, $digest ) = @_;
 
     # find the file containing the object, if any
     my $filename = Path::Class::File->new(
         $self->directory,
-        substr( $sha1, 0, 2 ),
-        substr( $sha1, 2 )
+        substr( $digest, 0, 2 ),
+        substr( $digest, 2 )
     );
     return if !-f $filename;
 
@@ -46,7 +46,7 @@ sub get_object {
     # pick up the class that will instantiate the object
     return Glow::Mapper->kind2class($kind)->new(
         size                    => $size,
-        sha1                    => $sha1,
+        digest                  => $digest,
         content_fh_from_closure => $build_fh,
     );
 }
@@ -57,8 +57,8 @@ sub put_object {
     # target filename
     my $filename = Path::Class::File->new(
         $self->directory,
-        substr( $object->sha1, 0, 2 ),
-        substr( $object->sha1, 2 )
+        substr( $object->digest, 0, 2 ),
+        substr( $object->digest, 2 )
     );
     $filename->parent->mkpath;
 
@@ -74,7 +74,7 @@ sub put_object {
         $zh->syswrite($buffer)
             or die "Error writing to $filename: $!";
         my $read = $fh->sysread( $buffer, 8192 );
-        die "Error reading content from ${\$object->sha1}: $!"
+        die "Error reading content from ${\$object->digest}: $!"
             if !defined $read;
     }
 

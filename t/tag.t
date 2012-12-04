@@ -14,7 +14,7 @@ for my $test ( @{ $objects{tag} } ) {
         [ content_from_file       => $test->{file} ],
         [ tag_info                => $test->{tag_info} ],
         [ content_fh_from_closure => $test->{closure} ],
-        ( [ git => $git, sha1 => $test->{sha1} ] )x!! $git
+        ( [ git => $git, digest => $test->{digest} ] )x!! $git
         )
     {
         diag "$test->{desc} with $args->[0]";

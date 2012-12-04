@@ -17,7 +17,7 @@ has commit_info => (
     handles => {
         map { $_ => [ get => $_ ] }
             qw(
-            tree_sha1
+            tree_digest
             author
             authored_time
             committer
@@ -28,23 +28,23 @@ has commit_info => (
     },
 );
 
-sub parents_sha1 { @{ $_[0]->commit_info->{parents_sha1} ||= [] }; }
+sub parents_digest { @{ $_[0]->commit_info->{parents_digest} ||= [] }; }
 
-sub _push_parents_sha1 {
-    my ( $self, $sha1 ) = @_;
-    push( @{ $self->parent_sha1s }, $sha1 );
+sub _push_parents_digest {
+    my ( $self, $digest ) = @_;
+    push( @{ $self->parent_digests }, $digest );
 }
 
 my %method_map = (
-    'tree'      => 'tree_sha1',
-    'parent'    => '_push_parents_sha1',
+    'tree'      => 'tree_digest',
+    'parent'    => '_push_parents_digest',
     'author'    => 'authored_time',
     'committer' => 'committed_time'
 );
 
 sub _build_commit_info {
     my $self        = shift;
-    my $commit_info = { parents_sha1 => [] };
+    my $commit_info = { parents_digest => [] };
 
     my @lines = split "\n", $self->content;
     my %header;
@@ -84,9 +84,9 @@ sub _build_commit_info {
 sub _build_fh_using_commit_info {
     my ($self) = @_;
     my $content;
-    $content .= 'tree ' . $self->tree_sha1 . "\n";
-    $content .= join( ' ', parent => $self->parents_sha1 ) . "\n"
-        if $self->parents_sha1;
+    $content .= 'tree ' . $self->tree_digest . "\n";
+    $content .= join( ' ', parent => $self->parents_digest ) . "\n"
+        if $self->parents_digest;
     $content .= join( ' ',
         author => $self->author->ident,
         $self->authored_time->epoch,

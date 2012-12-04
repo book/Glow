@@ -13,7 +13,7 @@ has git => (
 # at this point Git::Repository should have been loaded
 sub _build_fh_using_git {
     my ($self) = @_;
-    $self->git->command( 'cat-file', $self->kind, $self->sha1 )->stdout;
+    $self->git->command( 'cat-file', $self->kind, $self->digest )->stdout;
 }
 
 1;
