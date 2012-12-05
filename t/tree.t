@@ -6,9 +6,6 @@ our ( %objects, $git );
 
 use Glow::Object::Tree;
 
-is( Glow::Mapper->kind2class('tree'),
-    'Glow::Object::Tree', 'tree => Glow::Object::Tree' );
-
 for my $test ( @{ $objects{tree} } ) {
     for my $args (
         [ content                 => $test->{content} ],

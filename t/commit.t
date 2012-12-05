@@ -5,8 +5,6 @@ use t::TestData;
 our ( %objects, $git );
 
 use Glow::Object::Commit;
-is( Glow::Mapper->kind2class('commit'),
-    'Glow::Object::Commit', 'commit => Glow::Object::Commit' );
 
 for my $test ( @{ $objects{commit} } ) {
     for my $args (

@@ -5,8 +5,6 @@ use t::TestData;
 our ( %objects, $git );
 
 use Glow::Object::Tag;
-is( Glow::Mapper->kind2class('tag'),
-    'Glow::Object::Tag', 'tag => Glow::Object::Tag' );
 
 for my $test ( @{ $objects{tag} } ) {
     for my $args (

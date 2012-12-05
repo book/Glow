@@ -6,7 +6,5 @@ with 'Glow::Role::Digest' => { algorithm => 'SHA-1' };
 
 sub kind {'tag'}
 
-__PACKAGE__->register_mapping;
-
 1;
 

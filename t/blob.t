@@ -5,8 +5,6 @@ use t::TestData;
 our ( %objects, $git );
 
 use Glow::Object::Blob;
-is( Glow::Mapper->kind2class('blob'),
-    'Glow::Object::Blob', 'blob => Glow::Object::Blob' );
 
 for my $test ( @{ $objects{blob} } ) {
     for my $args (

@@ -7,8 +7,6 @@ use IO::Uncompress::Inflate qw( $InflateError) ;
 use IO::Compress::Deflate qw( $DeflateError) ;
 use Digest;
 
-use Glow::Mapper;
-
 has 'directory' => (
     is       => 'ro',
     isa      => 'Path::Class::Dir',
