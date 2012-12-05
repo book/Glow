@@ -1,4 +1,4 @@
-package Glow::Role::Backend::Loose;
+package Glow::Role::Storage::Loose;
 use MooseX::Role::Parameterized;
 use MooseX::Types::Path::Class;
 

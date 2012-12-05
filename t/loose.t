@@ -5,17 +5,17 @@ use File::Temp qw( tempdir );
 use t::TestData;
 our %objects;
 
-use Glow::Backend::Loose;
+use Glow::Storage::Loose;
 use Glow::Object::Blob;      # must register
 use Glow::Object::Tree;      # must register
 use Glow::Object::Commit;    # must register
 use Glow::Object::Tag;       # must register
 
 # a loose backend to read from
-my $loose_r = Glow::Backend::Loose->new( directory => 't/git/objects' );
+my $loose_r = Glow::Storage::Loose->new( directory => 't/git/objects' );
 
 # a loose backend to write to
-my $loose_w = Glow::Backend::Loose->new( directory => tempdir( CLEANUP => 1 ) );
+my $loose_w = Glow::Storage::Loose->new( directory => tempdir( CLEANUP => 1 ) );
 
 my %test_func = (
     blob   => [qw( test_blob_mem test_blob_fh)],
