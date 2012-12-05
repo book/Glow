@@ -21,6 +21,11 @@ parameter algorithm => (
     required => 1,
 );
 
+parameter kind2class => (
+    isa      => 'HashRef',
+    required => 1,
+);
+
 role {
     my $param = shift;
     my $segments
@@ -32,6 +37,15 @@ role {
         return map( { substr $digest, 2 * $_, 2 } 0 .. $segments - 1 ),
             substr $digest, 2 * $segments;
     };
+
+    # map object kinds to classes
+    my $kind2class = $param->kind2class;
+    method kind2class => sub {
+        my ( $self, $kind ) = @_;
+        die "No kind to class mapping found for $kind"
+            if !exists $kind2class->{$kind};
+        return $kind2class->{$kind};
+    }
 };
 
 sub get_object {
@@ -60,7 +74,7 @@ sub get_object {
     };
 
     # pick up the class that will instantiate the object
-    return Glow::Mapper->kind2class($kind)->new(
+    return $self->kind2class($kind)->new(
         size                    => $size,
         digest                  => $digest,
         content_fh_from_closure => $build_fh,
