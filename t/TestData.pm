@@ -45,6 +45,7 @@ our %objects = (
             ],
             content =>
                 "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\260",
+            string => "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n",
             file => 't/content/tree_hello',
             digest => 'b52168be5ea341e918a9cbbb76012375170a439f',
         },
@@ -62,6 +63,7 @@ our %objects = (
                 ),
             ],
             content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
+            string  => "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n040000 tree b52168be5ea341e918a9cbbb76012375170a439f\tsubdir\n",
             file    => 't/content/tree_subdir',
             digest  => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
         },
@@ -79,6 +81,7 @@ our %objects = (
                 ),
             ],
             content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
+            string  => "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n040000 tree b52168be5ea341e918a9cbbb76012375170a439f\tsubdir\n",
             file    => 't/content/tree_subdir',
             digest  => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
         },
@@ -155,6 +158,7 @@ for my $kind ( keys %objects ) {
         $object->{size}    = length $object->{content};
         $object->{closure} = make_closure( $object->{file} );
         $object->{lines}   = [ split /^/m, $object->{content} ];
+        $object->{string}  ||= $object->{content};
     }
 }
 
@@ -174,6 +178,7 @@ sub test_blob_mem {
     is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
     is( $blob->size,                $test->{size},     'size' );
     is( $blob->digest,              $test->{digest},   'digest' );
+    is( $blob->as_string,           $test->{string},   'as_string' );
 }
 
 sub test_blob_fh  {
