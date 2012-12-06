@@ -118,7 +118,42 @@ hello
 COMMIT
             file   => 't/content/commit_hello',
             digest => 'ef25e81ba86b7df16956c974c8a9c1ff2eca1326',
-        }
+        },
+        {   desc        => 'commit with a parent',
+            commit_info => {
+                tree_digest => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+                parents_digest =>
+                    ['ef25e81ba86b7df16956c974c8a9c1ff2eca1326'],
+                author => Glow::Actor->new(
+                    name  => 'Philippe Bruhat (BooK)',
+                    email => 'book@cpan.org'
+                ),
+                authored_time => DateTime->from_epoch(
+                    epoch     => 1352766313,
+                    time_zone => '+0100'
+                ),
+                committer => Glow::Actor->new(
+                    name  => 'Philippe Bruhat (BooK)',
+                    email => 'book@cpan.org'
+                ),
+                committed_time => DateTime->from_epoch(
+                    epoch     => 1352766360,
+                    time_zone => '+0100'
+                ),
+                comment  => 'say hi to parent!',
+                encoding => 'utf-8',
+            },
+            content => << 'COMMIT',
+tree 71ff52fcd190c0a900fffad2ecf2f678554602b6
+parent ef25e81ba86b7df16956c974c8a9c1ff2eca1326
+author Philippe Bruhat (BooK) <book@cpan.org> 1352766313 +0100
+committer Philippe Bruhat (BooK) <book@cpan.org> 1352766360 +0100
+
+say hi to parent!
+COMMIT
+            file   => 't/content/commit_say_hi',
+            digest => '3a4098405fa5a807b2306e345dda70d33d229c91',
+        },
     ],
     tag => [
         {   desc     => 'world tag',
