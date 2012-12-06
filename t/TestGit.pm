@@ -45,8 +45,9 @@ our %objects = (
             ],
             content =>
                 "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\260",
-            string => "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n",
-            file => 't/content/tree_hello',
+            string =>
+                "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n",
+            file   => 't/content/tree_hello',
             digest => 'b52168be5ea341e918a9cbbb76012375170a439f',
         },
         {   desc              => 'tree with subtree',
@@ -62,12 +63,14 @@ our %objects = (
                     digest   => 'b52168be5ea341e918a9cbbb76012375170a439f'
                 ),
             ],
-            content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
-            string  => "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n040000 tree b52168be5ea341e918a9cbbb76012375170a439f\tsubdir\n",
-            file    => 't/content/tree_subdir',
-            digest  => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+            content =>
+                "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
+            string =>
+                "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n040000 tree b52168be5ea341e918a9cbbb76012375170a439f\tsubdir\n",
+            file   => 't/content/tree_subdir',
+            digest => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
         },
-        {   desc              => 'tree with subtree (unsorted directory_entries)',
+        {   desc => 'tree with subtree (unsorted directory_entries)',
             directory_entries => [
                 Glow::DirectoryEntry->new(
                     mode     => '40000',
@@ -80,17 +83,19 @@ our %objects = (
                     digest   => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
                 ),
             ],
-            content => "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
-            string  => "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n040000 tree b52168be5ea341e918a9cbbb76012375170a439f\tsubdir\n",
-            file    => 't/content/tree_subdir',
-            digest  => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+            content =>
+                "100644 hello\0\266\374Lb\13g\331_\225:\\\34\0220\252\253]\265\241\26040000 subdir\0\265!h\276^\243A\351\30\251\313\273v\1#u\27\nC\237",
+            string =>
+                "100644 blob b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0\thello\n040000 tree b52168be5ea341e918a9cbbb76012375170a439f\tsubdir\n",
+            file   => 't/content/tree_subdir',
+            digest => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
         },
     ],
     commit => [
         {   desc        => 'hello commit',
             commit_info => {
                 tree_digest => 'b52168be5ea341e918a9cbbb76012375170a439f',
-                author    => Glow::Actor->new(
+                author      => Glow::Actor->new(
                     name  => 'Philippe Bruhat (BooK)',
                     email => 'book@cpan.org'
                 ),
@@ -194,7 +199,7 @@ for my $kind ( keys %objects ) {
         $object->{size}    = length $object->{content};
         $object->{closure} = make_closure( $object->{file} );
         $object->{lines}   = [ split /^/m, $object->{content} ];
-        $object->{string}  ||= $object->{content};
+        $object->{string} ||= $object->{content};
     }
 }
 
@@ -218,7 +223,7 @@ sub test_blob_mem {
     is( $blob->as_string,           $test->{string},   'as_string' );
 }
 
-sub test_blob_fh  {
+sub test_blob_fh {
     my ( $blob, $test ) = @_;
 
     # do not to read content in memory until the last test
