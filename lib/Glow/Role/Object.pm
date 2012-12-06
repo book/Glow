@@ -42,6 +42,8 @@ has content_builder => (
     writer   => '_set_content_builder',
 );
 
+sub as_string { $_[0]->content }
+
 # everywhere, try as hard as we can to avoid actually building content
 # but use it if it's available
 
