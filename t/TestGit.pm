@@ -155,6 +155,7 @@ TAG
 for my $kind ( keys %objects ) {
     for my $object ( @{ $objects{$kind} } ) {
         $object->{kind}    = $kind;
+        $object->{sha1}    = $object->{digest};
         $object->{size}    = length $object->{content};
         $object->{closure} = make_closure( $object->{file} );
         $object->{lines}   = [ split /^/m, $object->{content} ];
@@ -178,6 +179,7 @@ sub test_blob_mem {
     is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
     is( $blob->size,                $test->{size},     'size' );
     is( $blob->digest,              $test->{digest},   'digest' );
+    is( $blob->sha1,                $test->{sha1},     'sha1' );
     is( $blob->as_string,           $test->{string},   'as_string' );
 }
 
@@ -188,6 +190,7 @@ sub test_blob_fh  {
     isa_ok( $blob, 'Glow::Repository::Git::Object::Blob' );
     is( $blob->kind,                $test->{kind},     'kind' );
     is( $blob->digest,              $test->{digest},   'digest' );
+    is( $blob->sha1,                $test->{sha1},     'sha1' );
     is( $blob->size,                $test->{size},     'size' );
     is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
     is( $blob->content,             $test->{content},  'content' );
@@ -203,6 +206,7 @@ sub test_tree {
     is( $tree->content, $test->{content}, 'content' );
     is( $tree->size,    $test->{size},    'size' );
     is( $tree->digest,  $test->{digest},  'digest' );
+    is( $tree->sha1,    $test->{sha1},    'sha1' );
     is_deeply(
         [ $tree->directory_entries ],
         [   sort { $a->filename cmp $b->filename }
@@ -222,6 +226,7 @@ sub test_commit {
     is( $commit->content, $test->{content}, 'content' );
     is( $commit->size,    $test->{size},    'size' );
     is( $commit->digest,  $test->{digest},  'digest' );
+    is( $commit->sha1,    $test->{sha1},    'sha1' );
 
     # can't use is_deeply here
     my $commit_info = $commit->commit_info;
@@ -254,6 +259,7 @@ sub test_tag {
     is( $tag->content, $test->{content}, 'content' );
     is( $tag->size,    $test->{size},    'size' );
     is( $tag->digest,  $test->{digest},  'digest' );
+    is( $tag->sha1,    $test->{sha1},    'sha1' );
 
     # can't use is_deeply here
     my $tag_info = $tag->tag_info;
