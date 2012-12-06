@@ -15,6 +15,7 @@ with 'Glow::Role::ContentBuilder::FromGit';
 # all attributes are read-only
 
 # these attributes can be generated, and need not to be set in the constructor
+sub size;
 has size => (
     is       => 'ro',
     isa      => 'Int',
@@ -23,6 +24,7 @@ has size => (
     builder  => '_build_size',
 );
 
+sub content;
 has content => (
     is        => 'ro',
     isa       => 'Str',
