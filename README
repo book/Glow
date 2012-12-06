@@ -24,9 +24,10 @@ being production-ready. It may even change name at some point.
 NAMING
 
 The name Glow is an acronym for "Git-like object warehouse".
-This is more positive than Gloom ("Git-like objects on Moose"),
-and more general than Globe ("Git-like object backEnd"). It is
-good enough for now.
+This is more positive than Gloom ("Git-like objects on Moose")
+--besides, there's already a Gloom module on CPAN--
+and more general than Globe ("Git-like object backEnd").
+It is good enough for now.
 
 AUTHOR
 
