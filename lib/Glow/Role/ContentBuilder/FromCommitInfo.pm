@@ -30,14 +30,9 @@ has commit_info => (
 
 sub parents_digest { @{ $_[0]->commit_info->{parents_digest} ||= [] }; }
 
-sub _push_parents_digest {
-    my ( $self, $digest ) = @_;
-    push( @{ $self->parent_digests }, $digest );
-}
-
 my %method_map = (
     'tree'      => 'tree_digest',
-    'parent'    => '_push_parents_digest',
+    'parent'    => '@parents_digest',
     'author'    => 'authored_time',
     'committer' => 'committed_time'
 );
@@ -73,7 +68,10 @@ sub _build_commit_info {
             }
             else {
                 $key = $method_map{$key} || $key;
-                $commit_info->{$key} = $value;
+                if ( $key =~ s/^\@// ) {
+                    push @{ $commit_info->{$key} }, $value;
+                }
+                else { $commit_info->{$key} = $value; }
             }
         }
     }
