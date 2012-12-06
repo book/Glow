@@ -254,6 +254,7 @@ sub test_tree {
         ],
         'directory_entries'
     );
+    is( $tree->as_string, $test->{string}, 'as_string' );
 }
 
 sub test_commit {
@@ -286,6 +287,7 @@ sub test_commit {
         join( ' ', @{ $test->{commit_info}{parents_digest} || [] } ),
         'commit_info parents_digest'
     );
+    is( $commit->as_string, $test->{string}, 'as_string' );
 }
 
 sub test_tag {
@@ -313,6 +315,7 @@ sub test_tag {
         $test->{tag_info}{tagger}->ident,
         "commit_info tagger"
     );
+    is( $tag->as_string, $test->{string}, 'as_string' );
 }
 
 1;
