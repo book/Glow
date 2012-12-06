@@ -1,10 +1,8 @@
 use strict;
 use warnings;
 use Test::More;
-use t::TestData;
+use t::TestGit;
 our ( %objects, $git );
-
-use Glow::Object::Blob;
 
 for my $test ( @{ $objects{blob} } ) {
     for my $args (
@@ -17,10 +15,10 @@ for my $test ( @{ $objects{blob} } ) {
         diag "$test->{desc} with $args->[0]";
         my $blob;
 
-        $blob = Glow::Object::Blob->new(@$args);
+        $blob = Glow::Repository::Git::Object::Blob->new(@$args);
         test_blob_mem($blob, $test);
 
-        $blob = Glow::Object::Blob->new(@$args);
+        $blob = Glow::Repository::Git::Object::Blob->new(@$args);
         test_blob_fh($blob, $test);
     }
 }
@@ -40,7 +38,7 @@ my @errors = (
 
 for my $t (@errors) {
     my ( $args, $error, $mesg ) = @$t;
-    ok( !eval { Glow::Object::Blob->new(@$args); }, $mesg );
+    ok( !eval { Glow::Repository::Git::Object::Blob->new(@$args); }, $mesg );
     like( $@, $error, 'expected error message' );
 }
 

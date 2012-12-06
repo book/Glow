@@ -1,10 +1,8 @@
 use strict;
 use warnings;
 use Test::More;
-use t::TestData;
+use t::TestGit;
 our ( %objects, $git );
-
-use Glow::Object::Commit;
 
 for my $test ( @{ $objects{commit} } ) {
     for my $args (
@@ -17,7 +15,7 @@ for my $test ( @{ $objects{commit} } ) {
     {
         diag "$test->{desc} with $args->[0]";
 
-        my $commit = Glow::Object::Commit->new(@$args);
+        my $commit = Glow::Repository::Git::Object::Commit->new(@$args);
         test_commit( $commit, $test );
     }
 }

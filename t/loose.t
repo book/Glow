@@ -2,20 +2,16 @@ use strict;
 use warnings;
 use Test::More;
 use File::Temp qw( tempdir );
-use t::TestData;
+use t::TestGit;
 our %objects;
 
-use Glow::Storage::Loose;
-use Glow::Object::Blob;      # must register
-use Glow::Object::Tree;      # must register
-use Glow::Object::Commit;    # must register
-use Glow::Object::Tag;       # must register
-
 # a loose backend to read from
-my $loose_r = Glow::Storage::Loose->new( directory => 't/git/objects' );
+my $loose_r = Glow::Repository::Git::Storage::Loose->new(
+    directory => 't/git/objects' );
 
 # a loose backend to write to
-my $loose_w = Glow::Storage::Loose->new( directory => tempdir( CLEANUP => 1 ) );
+my $loose_w = Glow::Repository::Git::Storage::Loose->new(
+    directory => tempdir( CLEANUP => 1 ) );
 
 my %test_func = (
     blob   => [qw( test_blob_mem test_blob_fh)],
@@ -33,7 +29,7 @@ for my $test ( map @$_, values %objects ) {
     &$_( $object, $test ) for @{ $test_func{ $test->{kind} } };
 
     # save the object
-    $loose_w->put_object( $object );
+    $loose_w->put_object($object);
 
     # read it again
     $object = $loose_w->get_object( $test->{digest} );

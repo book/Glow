@@ -1,10 +1,8 @@
 use strict;
 use warnings;
 use Test::More;
-use t::TestData;
+use t::TestGit;
 our ( %objects, $git );
-
-use Glow::Object::Tag;
 
 for my $test ( @{ $objects{tag} } ) {
     for my $args (
@@ -17,7 +15,7 @@ for my $test ( @{ $objects{tag} } ) {
     {
         diag "$test->{desc} with $args->[0]";
 
-        my $tag = Glow::Object::Tag->new(@$args);
+        my $tag = Glow::Repository::Git::Object::Tag->new(@$args);
         test_tag( $tag, $test );
     }
 }

@@ -1,10 +1,8 @@
 use strict;
 use warnings;
 use Test::More;
-use t::TestData;
+use t::TestGit;
 our ( %objects, $git );
-
-use Glow::Object::Tree;
 
 for my $test ( @{ $objects{tree} } ) {
     for my $args (
@@ -17,7 +15,7 @@ for my $test ( @{ $objects{tree} } ) {
     {
         diag "$test->{desc} with $args->[0]";
 
-        my $tree = Glow::Object::Tree->new(@$args);
+        my $tree = Glow::Repository::Git::Object::Tree->new(@$args);
         test_tree( $tree, $test );
     }
 }
