@@ -1,6 +1,8 @@
 package Glow::Role::ContentBuilder::FromDirectoryEntries;
 use Moose::Role;
 
+use Glow::DirectoryEntry;
+
 requires '_content_from_trigger';
 
 has directory_entries => (
