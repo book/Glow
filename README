@@ -8,8 +8,10 @@ Glow is using and extending the concepts of the Git Object Database,
 to provide support for additional objects of any size, with any
 relationships between them.
 
-The default Glow implementation provides support for the four kinds of
-objects provided by Git: blob, tree, commit and tag.
+Glow provides a collection of Moose roles to build your own repository
+objects. The distribution provides Glow::Repository::Git as an example
+implementation providing support for the four kinds of objects provided
+by Git: blob, tree, commit and tag.
 
 CAVEAT EMPTOR
 
