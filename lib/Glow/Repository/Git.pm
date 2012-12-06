@@ -1,6 +1,7 @@
 package Glow::Repository::Git;
 
 use Moose;
+use namespace::autoclean;
 use Path::Class::Dir ();
 
 use Glow::Repository::Git::Config;
@@ -66,5 +67,4 @@ sub _build_objects_stores {
     ];
 }
 
-1;
-
+__PACKAGE__->meta->make_immutable;

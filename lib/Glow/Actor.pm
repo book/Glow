@@ -1,5 +1,7 @@
 package Glow::Actor;
+
 use Moose;
+use namespace::autoclean;
 
 has name => (
     is       => 'ro',
@@ -22,4 +24,4 @@ has ident => (
 
 sub _build_ident { $_[0]->name . ' <' . $_[0]->email . '>' }
 
-1;
+__PACKAGE__->meta->make_immutable;

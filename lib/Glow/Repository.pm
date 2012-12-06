@@ -1,6 +1,7 @@
 package Glow::Repository;
 
 use Moose;
+use namespace::autoclean;
 
 with 'Glow::Role::Repository';
 
@@ -17,4 +18,4 @@ around new => sub {
 
 sub _build_objects_stores;    # stub
 
-1;
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );

@@ -1,7 +1,8 @@
 package Glow::DirectoryEntry;
+
 use Moose;
+use namespace::autoclean;
 
 with 'Glow::Role::DirectoryEntry';
 
-1;
-
+__PACKAGE__->meta->make_immutable;

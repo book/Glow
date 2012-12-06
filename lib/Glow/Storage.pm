@@ -1,5 +1,6 @@
 package Glow::Storage;
 
 use Moose;
+use namespace::autoclean;
 
-1;
+__PACKAGE__->meta->make_immutable;

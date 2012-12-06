@@ -1,6 +1,7 @@
 package Glow::Config;
 
 use Moose;
+use namespace::autoclean;
 
 extends 'Config::GitLike';
 
@@ -17,4 +18,4 @@ override dir_file => sub {
     return $self->repository->directory->file('config');
 };
 
-1;
+__PACKAGE__->meta->make_immutable;
