@@ -30,4 +30,11 @@ sub get_object {
     return $object;
 }
 
+sub put_object {
+    my ( $self, $object ) = @_;
+    my ($store) = grep $_->can('put_object'), $self->objects_stores;
+    die "No object store to store ${\$object->digest}" if !$store;
+    $store->put_object($object);
+}
+
 1;
