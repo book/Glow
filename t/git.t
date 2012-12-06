@@ -20,6 +20,7 @@ my %test_func = (
     tree   => [qw( test_tree )],
     commit => [qw( test_commit )],
     tag    => [qw( test_tag )],
+    none   => [qw( test_none )],
 );
 
 # quick test of the config
@@ -42,6 +43,9 @@ for my $test ( map @$_, values %objects ) {
     # load the object
     my $object = $r->get_object( $test->{digest} );
     &$_( $object, $test ) for @{ $test_func{ $test->{kind} } };
+
+    # don't test saving non-objects
+    next if $test->{kind} eq 'none';
 
     # save the object
     $w->put_object($object);

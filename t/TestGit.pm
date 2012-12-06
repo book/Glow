@@ -189,6 +189,12 @@ TAG
             digest => 'f5c10c1a841419d3b1db0c3e0c42b554f9e1eeb2',
         }
     ],
+    none => [
+        {   desc   => 'non-existent object',
+            kind   => 'none',
+            digest => '0000000000000000000000000000000000000000',
+        },
+    ]
 );
 
 # add extra information
@@ -316,6 +322,11 @@ sub test_tag {
         "commit_info tagger"
     );
     is( $tag->as_string, $test->{string}, 'as_string' );
+}
+
+sub test_none {
+    my ( $none, $test ) = @_;
+    is( $none, undef, 'none' );
 }
 
 1;
