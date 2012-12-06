@@ -22,6 +22,19 @@ my %test_func = (
     tag    => [qw( test_tag )],
 );
 
+# quick test of the config
+my %config = (
+    'core.repositoryformatversion' => 0,
+    'core.filemode'                => 'true',
+    'core.bare'                    => 'true',
+    'dummy.naught'                 => undef,
+);
+
+for my $key ( sort keys %config ) {
+    is( $r->config->get( key => $key ), $config{$key}, $key );
+}
+
+# test reading and writing data
 for my $test ( map @$_, values %objects ) {
     no strict 'refs';
     diag "$test->{kind} $test->{digest}";
