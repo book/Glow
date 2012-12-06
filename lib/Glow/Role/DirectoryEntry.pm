@@ -13,5 +13,13 @@ sub as_content {
         . pack( 'H*', $self->digest );
 }
 
+sub as_string {
+    my ($self) = @_;
+    my $mode = oct( '0' . $_->mode );
+    return sprintf "%06o %s %s\t%s\n", $mode,
+        $mode & 0100000 ? 'blob' : 'tree',
+        $self->digest, $self->filename;
+}
+
 1;
 
