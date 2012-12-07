@@ -5,6 +5,15 @@ has 'mode'     => ( is => 'ro', isa => 'Str', required => 1 );
 has 'filename' => ( is => 'ro', isa => 'Str', required => 1 );
 has 'digest'   => ( is => 'ro', isa => 'Str', required => 1 );
 
+# Git only uses the following (octal) modes:
+# - 040000 for subdirectory (tree)
+# - 100644 for file (blob)
+# - 100755 for executable (blob)
+# - 120000 for a blob that specifies the path of a symlink
+# - 160000 for submodule (commit)
+#
+# See also: cache.h in git.git
+
 sub as_content {
     my ($self) = @_;
     return
