@@ -37,12 +37,11 @@ sub _build_config {
 
 sub get_object {
     my ( $self, $digest ) = @_;
-    my $object;
     for my $store ( $self->objects_stores ) {
-        $object = $store->get_object($digest);
+        my $object = $store->get_object($digest);
         return $object if $object;
     }
-    return $object;
+    return;    # found nothing
 }
 
 sub put_object {
