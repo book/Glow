@@ -202,6 +202,7 @@ for my $kind ( keys %objects ) {
     for my $object ( @{ $objects{$kind} } ) {
         $object->{kind}    = $kind;
         $object->{sha1}    = $object->{digest};
+        next if $kind eq 'none';
         $object->{size}    = length $object->{content};
         $object->{closure} = make_closure( $object->{file} );
         $object->{lines}   = [ split /^/m, $object->{content} ];

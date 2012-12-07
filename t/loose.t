@@ -21,9 +21,13 @@ my %test_func = (
     none   => [qw( test_none )],
 );
 
+my %stored;
 for my $test ( map @$_, values %objects ) {
     no strict 'refs';
     diag "$test->{kind} $test->{digest}";
+
+    ok( $loose_r->has_object( $test->{digest} ) x!! $test->{kind} ne 'none',
+        'has_object' );
 
     # load the object
     my $object = $loose_r->get_object( $test->{digest} );
@@ -32,8 +36,15 @@ for my $test ( map @$_, values %objects ) {
     # don't test saving non-objects
     next if $test->{kind} eq 'none';
 
+    is( $loose_w->has_object( $test->{digest} ),
+        !!$stored{ $test->{digest} },
+        'has_object yet'
+    );
+
     # save the object
     $loose_w->put_object($object);
+    $stored{ $object->digest }++;
+    ok( $loose_w->has_object( $test->{digest} ), 'has_object now' );
 
     # read it again
     $object = $loose_w->get_object( $test->{digest} );

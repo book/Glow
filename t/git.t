@@ -36,9 +36,13 @@ for my $key ( sort keys %config ) {
 }
 
 # test reading and writing data
+my %stored;
 for my $test ( map @$_, values %objects ) {
     no strict 'refs';
     diag "$test->{kind} $test->{digest}";
+
+    ok( $r->has_object( $test->{digest} ) x!! $test->{kind} ne 'none',
+        'has_object' );
 
     # load the object
     my $object = $r->get_object( $test->{digest} );
@@ -47,8 +51,15 @@ for my $test ( map @$_, values %objects ) {
     # don't test saving non-objects
     next if $test->{kind} eq 'none';
 
+    is( $w->has_object( $test->{digest} ),
+        !!$stored{ $test->{digest} },
+        'has_object yet'
+    );
+
     # save the object
     $w->put_object($object);
+    $stored{ $object->digest }++;
+    ok( $w->has_object( $test->{digest} ), 'has_object now' );
 
     # read it again
     $object = $w->get_object( $test->{digest} );
@@ -56,4 +67,3 @@ for my $test ( map @$_, values %objects ) {
 }
 
 done_testing;
-
