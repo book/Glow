@@ -13,6 +13,13 @@ has stores => (
 
 # a Glow::Store is a collection of objects doing Glow::Role::Storage
 
+sub has_object {
+    my ( $self, $digest ) = @_;
+    $_->has_object($digest) and return 1
+        for $self->stores;
+    return '';
+}
+
 sub get_object {
     my ( $self, $digest ) = @_;
     for my $store ( $self->stores ) {

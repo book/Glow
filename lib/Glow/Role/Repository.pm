@@ -28,7 +28,7 @@ has 'object_store' => (
     required   => 0,
     lazy       => 1,
     builder    => '_build_object_store',
-    handles    => [ 'get_object', 'put_object' ],
+    handles    => [ 'has_object', 'get_object', 'put_object' ],
 );
 
 sub _build_config {

@@ -54,6 +54,11 @@ sub _object_filename {
         $self->digest_segments($digest) );
 }
 
+sub has_object {
+    my ( $self, $digest ) = @_;
+    return !! -f $self->_object_filename($digest);
+}
+
 sub get_object {
     my ( $self, $digest ) = @_;
 
