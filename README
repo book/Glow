@@ -38,7 +38,7 @@ Philippe Bruhat (BooK)
 ACKNOWLEDGEMENT
 
 Glow is heavily inspired from Git itself, and from the Moose-based,
-pure Perl implementation Git::PurePerl.
+pure Perl implementation Git::PurePerl (itself based on Grit).
 
 COPYRIGHT
 
