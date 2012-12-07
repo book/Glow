@@ -46,9 +46,13 @@ sub get_object {
 
 sub put_object {
     my ( $self, $object ) = @_;
-    my ($store) = grep $_->can('put_object'), $self->objects_stores;
-    die "No object store to store ${\$object->digest}" if !$store;
-    $store->put_object($object);
+    my (@stores) = grep $_->can('put_object'), $self->objects_stores;
+    die "No object store to store ${\$object->digest}" if !@stores;
+
+    # if saving fails, move on to the next store
+    eval { $_->put_object($object); } and return 1
+        for @stores;
+    return '';
 }
 
 1;
