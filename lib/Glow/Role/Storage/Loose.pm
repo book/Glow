@@ -46,12 +46,16 @@ role {
     }
 };
 
+sub _object_filename {
+    my ( $self, $digest ) = @_;
+    return Path::Class::File->new( $self->directory,
+        $self->digest_segments($digest) );
+}
+
 sub get_object {
     my ( $self, $digest ) = @_;
 
-    # find the file containing the object, if any
-    my $filename = Path::Class::File->new( $self->directory,
-        $self->digest_segments($digest) );
+    my $filename = $self->_object_filename($digest);
     return if !-f $filename;
 
     # create a filehandle to read from
@@ -83,8 +87,7 @@ sub put_object {
     my ( $self, $object ) = @_;
 
     # target filename
-    my $filename = Path::Class::File->new( $self->directory,
-        $self->digest_segments( $object->digest ) );
+    my $filename = $self->_object_filename( $object->digest );
     $filename->parent->mkpath;
 
     # filehandle to read from
