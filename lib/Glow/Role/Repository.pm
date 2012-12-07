@@ -3,8 +3,9 @@ use Moose::Role;
 use MooseX::Types::Path::Class;
 
 use Glow::Config;
+use Glow::Store;
 
-requires qw( _build_objects_stores );
+requires qw( _build_object_store );
 
 has 'directory' => (
     is       => 'ro',
@@ -21,38 +22,18 @@ has 'config' => (
     builder  => '_build_config',
 );
 
-has 'objects_stores' => (
+has 'object_store' => (
     is         => 'ro',
-    isa        => 'ArrayRef[Glow::Storage]',
+    isa        => 'Glow::Store',
     required   => 0,
     lazy       => 1,
-    builder    => '_build_objects_stores',
-    auto_deref => 1,
+    builder    => '_build_object_store',
+    handles    => [ 'get_object', 'put_object' ],
 );
 
 sub _build_config {
     my ($self) = @_;
     return Glow::Config->new( repository => $self );
-}
-
-sub get_object {
-    my ( $self, $digest ) = @_;
-    for my $store ( $self->objects_stores ) {
-        my $object = $store->get_object($digest);
-        return $object if $object;
-    }
-    return;    # found nothing
-}
-
-sub put_object {
-    my ( $self, $object ) = @_;
-    my (@stores) = grep $_->can('put_object'), $self->objects_stores;
-    die "No object store to store ${\$object->digest}" if !@stores;
-
-    # if saving fails, move on to the next store
-    eval { $_->put_object($object); } and return 1
-        for @stores;
-    return '';
 }
 
 1;

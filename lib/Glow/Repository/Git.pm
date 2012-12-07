@@ -39,7 +39,7 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
     # the loose storage class
     Moose::Meta::Class->create(
         'Glow::Repository::Git::Storage::Loose',
-        superclasses => ['Glow::Storage'],
+        superclasses => ['Moose::Object'],
         roles        => [
             'Glow::Role::Storage::Loose' => {
                 algorithm  => 'SHA-1',
@@ -55,16 +55,17 @@ sub _build_config {
     return Glow::Repository::Git::Config->new( repository => $self );
 }
 
-sub _build_objects_stores {
+sub _build_object_store {
     my ($self) = @_;
-    return [
-
-        # TODO packs
-        # loose
-        Glow::Repository::Git::Storage::Loose->new(
-            directory => Path::Class::Dir->new( $self->directory, 'objects' )
-        ),
-    ];
+    return Glow::Store->new(
+        stores => [
+            # packs (TODO)
+            # loose
+            Glow::Repository::Git::Storage::Loose->new(
+                directory => Path::Class::Dir->new( $self->directory, 'objects' )
+            ),
+        ]
+    );
 }
 
 __PACKAGE__->meta->make_immutable;
