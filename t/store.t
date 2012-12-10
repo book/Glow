@@ -43,5 +43,22 @@ ok( !$store->delete_object( $blob->digest ),
     'absent blob not deleted from the store'
 );
 
+# a store is storage too
+my $loose_s = Glow::Repository::Git::Storage::Loose->new(
+    directory => tempdir( CLEANUP => 1 ), readonly => 1 );
+my $store2 = Glow::Store->new( stores => [ $loose_s, $store ] );
+
+# save the blob again
+ok( $store2->put_object($blob), 'blob saved in the store' );
+
+# it ended up in the writable store
+ok( $store2->has_object( $blob->digest ), 'blob now in the writable store' );
+
+# remove it
+ok( $store2->delete_object( $blob->digest ), 'blob deleted from the store' );
+
+# it's gone
+ok( !$store2->has_object( $blob->digest ), 'blob now in the writable store' );
+
 done_testing;
 
