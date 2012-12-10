@@ -2,9 +2,9 @@ package Glow::Store;
 
 use Moose;
 use namespace::autoclean;
-
-use Glow::Role::Storage;
 use List::Util qw( sum );
+
+with 'Glow::Role::Storage';
 
 has stores => (
     is         => 'ro',
@@ -14,6 +14,8 @@ has stores => (
 );
 
 # a Glow::Store is a collection of objects doing Glow::Role::Storage
+
+sub _build_readonly { '' }
 
 sub has_object {
     my ( $self, $digest ) = @_;
