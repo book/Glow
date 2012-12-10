@@ -39,13 +39,14 @@ sub put_object {
 
     # try all stores until one actually saves it
     $_->put_object($object) and return 1
-        for $self->stores;
+        for grep !$_->readonly, $self->stores;
     return '';
 }
 
 sub delete_object {
     my ( $self, $digest ) = @_;
-    return sum map $_->delete_object($digest), $self->stores;
+    return sum map $_->delete_object($digest), grep !$_->readonly,
+        $self->stores;
 }
 
 __PACKAGE__->meta->make_immutable;
