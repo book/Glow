@@ -47,6 +47,7 @@ ok( !$store->delete_object( $blob->digest ),
 my $loose_s = Glow::Repository::Git::Storage::Loose->new(
     directory => tempdir( CLEANUP => 1 ), readonly => 1 );
 my $store2 = Glow::Store->new( stores => [ $loose_s, $store ] );
+ok( !$store2->readonly, 'this store is writable' );
 
 # save the blob again
 ok( $store2->put_object($blob), 'blob saved in the store' );
@@ -59,6 +60,10 @@ ok( $store2->delete_object( $blob->digest ), 'blob deleted from the store' );
 
 # it's gone
 ok( !$store2->has_object( $blob->digest ), 'blob now in the writable store' );
+
+# if all storage / store inside is readonly, then the store is too
+my $store3 = Glow::Store->new( stores => [ $loose_s, $loose_r ] );
+ok( $store3->readonly, 'this store is readonly' );
 
 done_testing;
 

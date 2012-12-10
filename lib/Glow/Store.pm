@@ -15,7 +15,12 @@ has stores => (
 
 # a Glow::Store is a collection of objects doing Glow::Role::Storage
 
-sub _build_readonly { '' }
+sub _build_readonly {
+    my ($self) = @_;
+
+    # it's only readonly if all storage inside is readonly
+    return !scalar grep !$_->readonly, $self->stores;
+}
 
 sub has_object {
     my ( $self, $digest ) = @_;
