@@ -330,4 +330,12 @@ sub test_none {
     is( $none, undef, 'none' );
 }
 
+our %test_func = (
+    blob   => [qw( test_blob_mem test_blob_fh)],
+    tree   => [qw( test_tree )],
+    commit => [qw( test_commit )],
+    tag    => [qw( test_tag )],
+    none   => [qw( test_none )],
+);
+
 1;

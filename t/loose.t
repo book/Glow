@@ -3,7 +3,7 @@ use warnings;
 use Test::More;
 use File::Temp qw( tempdir );
 use t::TestGit;
-our %objects;
+our ( %objects, %test_func );
 
 # a loose backend to read from
 my $loose_r = Glow::Repository::Git::Storage::Loose->new(
@@ -12,14 +12,6 @@ my $loose_r = Glow::Repository::Git::Storage::Loose->new(
 # a loose backend to write to
 my $loose_w = Glow::Repository::Git::Storage::Loose->new(
     directory => tempdir( CLEANUP => 1 ) );
-
-my %test_func = (
-    blob   => [qw( test_blob_mem test_blob_fh)],
-    tree   => [qw( test_tree )],
-    commit => [qw( test_commit )],
-    tag    => [qw( test_tag )],
-    none   => [qw( test_none )],
-);
 
 my %stored;
 for my $test ( map @$_, values %objects ) {
