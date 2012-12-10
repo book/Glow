@@ -1,6 +1,7 @@
 package Glow::Store;
 
 use Moose;
+use namespace::autoclean;
 
 use Glow::Role::Storage;
 use List::Util qw( sum );
@@ -47,4 +48,4 @@ sub delete_object {
     return sum map $_->delete_object($digest), $self->stores;
 }
 
-1;
+__PACKAGE__->meta->make_immutable;
