@@ -31,6 +31,11 @@ sub get_object {
 
 sub put_object {
     my ( $self, $object ) = @_;
+
+    # it's already there, no need to save it again
+    return 1 if $self->has_object( $object->digest );
+
+    # try all stores until one actually saves it
     $_->put_object($object) and return 1
         for $self->stores;
     return '';
