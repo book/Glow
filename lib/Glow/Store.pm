@@ -3,6 +3,7 @@ package Glow::Store;
 use Moose;
 
 use Glow::Role::Storage;
+use List::Util qw( sum );
 
 has stores => (
     is  => 'ro',
@@ -39,6 +40,11 @@ sub put_object {
     $_->put_object($object) and return 1
         for $self->stores;
     return '';
+}
+
+sub delete_object {
+    my ( $self, $digest ) = @_;
+    return sum map $_->delete_object($digest), $self->stores;
 }
 
 1;

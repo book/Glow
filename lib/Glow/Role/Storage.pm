@@ -2,7 +2,7 @@ package Glow::Role::Storage;
 
 use Moose::Role;
 
-requires qw( has_object get_object put_object );
+requires qw( has_object get_object put_object delete_object );
 
 has readonly => (
     is       => 'ro',

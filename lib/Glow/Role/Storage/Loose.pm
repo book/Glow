@@ -123,5 +123,11 @@ sub put_object {
     rename $tmp->filename, $filename;
 }
 
+sub delete_object {
+    my ( $self, $digest ) = @_;
+    return 0 if $self->readonly;
+    return unlink $self->_object_filename( $digest );
+}
+
 1;
 
