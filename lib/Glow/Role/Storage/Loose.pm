@@ -94,6 +94,9 @@ sub get_object {
 
 sub put_object {
     my ( $self, $object ) = @_;
+
+    # the simple cases
+    return 1  if $self->has_object( $object->digest );
     return '' if $self->readonly;
 
     # target filename
