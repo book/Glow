@@ -48,6 +48,8 @@ role {
     }
 };
 
+sub _build_readonly { '' }
+
 sub _object_filename {
     my ( $self, $digest ) = @_;
     return Path::Class::File->new( $self->directory,
@@ -92,6 +94,7 @@ sub get_object {
 
 sub put_object {
     my ( $self, $object ) = @_;
+    return '' if $self->readonly;
 
     # target filename
     my $filename = $self->_object_filename( $object->digest );
