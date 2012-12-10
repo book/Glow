@@ -7,9 +7,9 @@ use Glow::Role::Storage;
 use List::Util qw( sum );
 
 has stores => (
-    is  => 'ro',
-    isa => 'ArrayRef[Glow::Role::Storage]',
-    required => 1,
+    is         => 'ro',
+    isa        => 'ArrayRef[Glow::Role::Storage]',
+    required   => 1,
     auto_deref => 1,
 );
 
@@ -17,8 +17,7 @@ has stores => (
 
 sub has_object {
     my ( $self, $digest ) = @_;
-    $_->has_object($digest) and return 1
-        for $self->stores;
+    $_->has_object($digest) and return 1 for $self->stores;
     return '';
 }
 
