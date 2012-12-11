@@ -12,7 +12,7 @@ around new => sub {
     # get the class from the config
     $class = $self->config->get( key => 'glow.class' )
         || 'Glow::Repository::Git';
-    eval "require $class";
+    eval "require $class" or die $@;
     $class->new(@args);
 };
 
