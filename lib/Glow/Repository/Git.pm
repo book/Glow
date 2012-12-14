@@ -5,6 +5,7 @@ use namespace::autoclean;
 use Path::Class::Dir ();
 
 use Glow::Repository::Git::Config;
+use Glow::Repository::Git::Storage::Pack;
 
 with 'Glow::Role::Repository';
 
@@ -57,15 +58,32 @@ sub _build_config {
 
 sub _build_object_store {
     my ($self) = @_;
-    return Glow::Store->new(
-        stores => [
-            # packs (TODO)
-            # loose
-            Glow::Repository::Git::Storage::Loose->new(
-                directory => Path::Class::Dir->new( $self->directory, 'objects' )
-            ),
-        ]
-    );
+    my @pack_store;
+    my $pack_dir
+        = Path::Class::Dir->new( $self->directory, 'objects', 'pack' );
+
+    # packs
+    if ( -e $pack_dir ) {
+        push @pack_store,
+            Glow::Store->new(
+            readonly => 1,
+            stores   => [
+                map Glow::Repository::Git::Storage::Pack->new(
+                    filename => $_
+                ),
+                grep $_ =~ /\.pack$/,
+                $pack_dir->children
+            ],
+            );
+    }
+
+    # loose
+    push @pack_store,
+        Glow::Repository::Git::Storage::Loose->new(
+        directory => Path::Class::Dir->new( $self->directory, 'objects' ) );
+
+    # full store
+    return Glow::Store->new( stores => \@pack_store );
 }
 
 __PACKAGE__->meta->make_immutable;
