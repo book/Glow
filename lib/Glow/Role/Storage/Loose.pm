@@ -107,8 +107,8 @@ sub put_object {
     my $fh = $object->content_fh;
 
     # save to compressed temporary file
-    my $tmp = File::Temp->new( DIR => $filename->parent );
-    my $zh = IO::Compress::Deflate->new( $tmp->filename )
+    my ( undef, $tempfile ) = $filename->parent->tempfile;
+    my $zh = IO::Compress::Deflate->new( $tempfile )
         or die "Can't open $filename: $DeflateError";
     my $buffer = $object->kind . ' ' . $object->size . "\0";
     while ( length $buffer ) {
@@ -120,7 +120,7 @@ sub put_object {
     }
 
     # move it to its final destination
-    rename $tmp->filename, $filename;
+    rename $tempfile, $filename;
 }
 
 sub delete_object {
