@@ -1,7 +1,6 @@
 package Glow::Role::Object;
 use Moose::Role;
 
-use Digest::SHA ();
 use FileHandle  ();
 use IO::String  ();
 use Fcntl qw( SEEK_END );
