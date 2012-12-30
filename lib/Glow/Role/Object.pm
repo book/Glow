@@ -10,7 +10,6 @@ requires 'kind';
 
 with 'Glow::Role::ContentBuilder::FromFile';
 with 'Glow::Role::ContentBuilder::FromClosure';
-with 'Glow::Role::ContentBuilder::FromGit';
 
 # all attributes are read-only
 

@@ -26,6 +26,7 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
             roles        => [
                 "Glow::Role::$Kind",
                 'Glow::Role::Digest' => { algorithm => 'SHA-1', },
+                'Glow::Role::ContentBuilder::FromGit',
             ],
             methods => {
                 kind => sub {$kind},
