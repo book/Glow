@@ -1,7 +1,7 @@
 package Glow::Role::ContentBuilder::FromGit;
 use Moose::Role;
 
-requires '_content_from_trigger';
+with 'Glow::Role::ContentBuilder';
 
 has git => (
     is       => 'ro',

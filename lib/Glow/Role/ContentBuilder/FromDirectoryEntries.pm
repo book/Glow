@@ -3,7 +3,7 @@ use Moose::Role;
 
 use Glow::DirectoryEntry;
 
-requires '_content_from_trigger';
+with 'Glow::Role::ContentBuilder';
 
 has directory_entries => (
     is          => 'ro',

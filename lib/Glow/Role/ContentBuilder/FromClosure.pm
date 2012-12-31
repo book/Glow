@@ -1,7 +1,7 @@
 package Glow::Role::ContentBuilder::FromClosure;
 use Moose::Role;
 
-requires '_content_from_trigger';
+with 'Glow::Role::ContentBuilder';
 
 has content_fh_from_closure => (
     is       => 'ro',

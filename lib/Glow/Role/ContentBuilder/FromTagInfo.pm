@@ -4,7 +4,7 @@ use Glow::Actor;
 
 use Encode qw( decode );
 
-requires '_content_from_trigger';
+with 'Glow::Role::ContentBuilder';
 
 has tag_info => (
     traits   => ['Hash'],

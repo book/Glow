@@ -1,7 +1,7 @@
 package Glow::Role::ContentBuilder::FromFile;
 use Moose::Role;
 
-requires '_content_from_trigger';
+with 'Glow::Role::ContentBuilder';
 
 has content_from_file => (
     is       => 'ro',
