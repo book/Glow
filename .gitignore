@@ -1,0 +1,9 @@
+Glow-*
+*.tar.gz
+cover_db
+*.bak
+*.swp
+*~
+*.patch
+setup
+mess/
