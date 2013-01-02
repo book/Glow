@@ -89,13 +89,12 @@ sub _build_config {
 
 sub _build_object_store {
     my ($self) = @_;
-    my @pack_store;
-    my $pack_dir
-        = Path::Class::Dir->new( $self->directory, 'objects', 'pack' );
+    my @stores;
+    my $dir = Path::Class::Dir->new( $self->directory, 'objects', 'pack' );
 
     # packs
-    if ( -e $pack_dir ) {
-        push @pack_store,
+    if ( -e $dir ) {
+        push @stores,
             Glow::Store->new(
             readonly => 1,
             stores   => [
@@ -103,18 +102,18 @@ sub _build_object_store {
                     filename => $_
                 ),
                 grep $_ =~ /\.pack$/,
-                $pack_dir->children
+                $dir->children
             ],
             );
     }
 
     # loose
-    push @pack_store,
+    push @stores,
         Glow::Repository::Git::Storage::Loose->new(
         directory => Path::Class::Dir->new( $self->directory, 'objects' ) );
 
     # full store
-    return Glow::Store->new( stores => \@pack_store );
+    return Glow::Store->new( stores => \@stores );
 }
 
 __PACKAGE__->meta->make_immutable;
