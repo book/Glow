@@ -6,6 +6,7 @@ use Path::Class::Dir ();
 
 use Glow::Repository::Git::Config;
 use Glow::Repository::Git::Storage::Pack;
+use Glow::Repository::Git::DirectoryEntry;
 
 with 'Glow::Role::Repository';
 
@@ -42,11 +43,6 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
         return \@directory_entries;
     };
 
-    # must be loaded before the class is created,
-    # so that Moose knows it's a role and not a class
-    # when applying type constraints
-    use Glow::Role::DirectoryEntry;
-
     # the classes for the objects
     for my $kind (qw( blob tree commit tag )) {
         my $Kind  = ucfirst $kind;
@@ -81,43 +77,6 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
                 kind2class => $kind2class,
             },
         ],
-    );
-
-    # the directory entry class
-
-    # Git only uses the following (octal) modes:
-    # - 040000 for subdirectory (tree)
-    # - 100644 for file (blob)
-    # - 100755 for executable (blob)
-    # - 120000 for a blob that specifies the path of a symlink
-    # - 160000 for submodule (commit)
-    #
-    # See also: cache.h in git.git
-    Moose::Meta::Class->create(
-        'Glow::Repository::Git::DirectoryEntry',
-        superclasses => ['Moose::Object'],
-        roles        => ['Glow::Role::DirectoryEntry'],
-        attributes   => [
-            Moose::Meta::Attribute->new(
-                mode => ( is => 'ro', isa => 'Str', required => 1 )
-            ),
-        ],
-        methods => {
-            as_content => sub {
-                my ($self) = @_;
-                return
-                      $self->mode . ' '
-                    . $self->filename . "\0"
-                    . pack( 'H*', $self->digest );
-            },
-            as_string => sub {
-                my ($self) = @_;
-                my $mode = oct( '0' . $_->mode );
-                return sprintf "%06o %s %s\t%s\n", $mode,
-                    $mode & 0100000 ? 'blob' : 'tree',
-                    $self->digest, $self->filename;
-            },
-        },
     );
 
 }
