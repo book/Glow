@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Glow::Repository::Git;
-use Glow::DirectoryEntry;
 use Glow::Actor;
 use DateTime;
 
@@ -37,7 +36,7 @@ our %objects = (
         },
         {   desc              => 'hello tree',
             directory_entries => [
-                Glow::DirectoryEntry->new(
+                Glow::Repository::Git::DirectoryEntry->new(
                     mode     => '100644',
                     filename => 'hello',
                     digest   => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
@@ -52,12 +51,12 @@ our %objects = (
         },
         {   desc              => 'tree with subtree',
             directory_entries => [
-                Glow::DirectoryEntry->new(
+                Glow::Repository::Git::DirectoryEntry->new(
                     mode     => '100644',
                     filename => 'hello',
                     digest   => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'
                 ),
-                Glow::DirectoryEntry->new(
+                Glow::Repository::Git::DirectoryEntry->new(
                     mode     => '40000',
                     filename => 'subdir',
                     digest   => 'b52168be5ea341e918a9cbbb76012375170a439f'
@@ -72,12 +71,12 @@ our %objects = (
         },
         {   desc => 'tree with subtree (unsorted directory_entries)',
             directory_entries => [
-                Glow::DirectoryEntry->new(
+                Glow::Repository::Git::DirectoryEntry->new(
                     mode     => '40000',
                     filename => 'subdir',
                     digest   => 'b52168be5ea341e918a9cbbb76012375170a439f'
                 ),
-                Glow::DirectoryEntry->new(
+                Glow::Repository::Git::DirectoryEntry->new(
                     mode     => '100644',
                     filename => 'hello',
                     digest   => 'b6fc4c620b67d95f953a5c1c1230aaab5db5a1b0'

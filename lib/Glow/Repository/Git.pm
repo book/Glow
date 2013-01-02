@@ -15,6 +15,38 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
 {
     my $kind2class = {};
 
+    # special method for the Tree class
+    sub Glow::Repository::Git::Object::Tree::_build_directory_entries;  # stub
+    my $bde = sub {
+        my $self    = shift;
+        my $content = $self->content;
+        return [] unless $content;
+
+        my @directory_entries;
+        while ($content) {
+            my $space_index = index( $content, ' ' );
+            my $mode = substr( $content, 0, $space_index );
+            $content = substr( $content, $space_index + 1 );
+            my $null_index = index( $content, "\0" );
+            my $filename = substr( $content, 0, $null_index );
+            $content = substr( $content, $null_index + 1 );
+            my $digest = unpack( 'H*', substr( $content, 0, 20 ) );
+            $content = substr( $content, 20 );
+            push @directory_entries,
+                Glow::Repository::Git::DirectoryEntry->new(
+                mode     => $mode,
+                filename => $filename,
+                digest   => $digest,
+                );
+        }
+        return \@directory_entries;
+    };
+
+    # must be loaded before the class is created,
+    # so that Moose knows it's a role and not a class
+    # when applying type constraints
+    use Glow::Role::DirectoryEntry;
+
     # the classes for the objects
     for my $kind (qw( blob tree commit tag )) {
         my $Kind  = ucfirst $kind;
@@ -31,6 +63,7 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
             methods => {
                 kind => sub {$kind},
                 sha1 => sub { $_[0]->digest },    # alias
+                ( _build_directory_entries => $bde )x!! ( $kind eq 'tree' ),
             },
         );
 
@@ -49,6 +82,44 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
             },
         ],
     );
+
+    # the directory entry class
+
+    # Git only uses the following (octal) modes:
+    # - 040000 for subdirectory (tree)
+    # - 100644 for file (blob)
+    # - 100755 for executable (blob)
+    # - 120000 for a blob that specifies the path of a symlink
+    # - 160000 for submodule (commit)
+    #
+    # See also: cache.h in git.git
+    Moose::Meta::Class->create(
+        'Glow::Repository::Git::DirectoryEntry',
+        superclasses => ['Moose::Object'],
+        roles        => ['Glow::Role::DirectoryEntry'],
+        attributes   => [
+            Moose::Meta::Attribute->new(
+                mode => ( is => 'ro', isa => 'Str', required => 1 )
+            ),
+        ],
+        methods => {
+            as_content => sub {
+                my ($self) = @_;
+                return
+                      $self->mode . ' '
+                    . $self->filename . "\0"
+                    . pack( 'H*', $self->digest );
+            },
+            as_string => sub {
+                my ($self) = @_;
+                my $mode = oct( '0' . $_->mode );
+                return sprintf "%06o %s %s\t%s\n", $mode,
+                    $mode & 0100000 ? 'blob' : 'tree',
+                    $self->digest, $self->filename;
+            },
+        },
+    );
+
 }
 
 # builder methods
