@@ -44,6 +44,8 @@ returns the actual content data.
 
 The L<Glow::Role::Object> role defines a C<_content_from_trigger()> method,
 that is used by its C<content_fh()> method.
+That C<_content_from_trigger()> method ensures that only one of the
+content-providing attributes is set in the constructor.
 
 =head1 SEE ALSO
 
