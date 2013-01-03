@@ -42,10 +42,13 @@ This is done by defining a new attribute and a specific method (named
 after the attribute) that will act as a builder for a filehandle that
 returns the actual content data.
 
-The L<Glow::Role::Object> role defines a C<_content_from_trigger()> method,
-that is used by its C<content_fh()> method.
-That C<_content_from_trigger()> method ensures that only one of the
-content-providing attributes is set in the constructor.
+The L<Glow::Role::Object> role defines a C<_content_from_trigger()>
+method, to be used in the attribute trigger. That method ensures that
+only one of the content-providing attributes is set in the constructor.
+
+L<Glow::Role::Object> uses the C<_build_fh_using_I<attribute>> method
+in its C<content_fh()> method, to provide a filehandle from which to
+read the content built from the attribute.
 
 =head1 SEE ALSO
 
