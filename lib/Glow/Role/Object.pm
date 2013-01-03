@@ -94,3 +94,66 @@ sub _content_from_trigger {
 }
 
 1;
+
+# ABSTRACT: The core of what a Glow object does
+
+=pod
+
+=head1 SYNOPSIS
+
+    # write a custom object class
+    package My::Glow::Object;
+
+    use Moose;
+
+    with 'Glow::Role::Object',
+        'Glow::Role::Digest' => { algorithm => 'SHA-256' };
+
+    sub kind {'my-object'}
+
+    has some_attribute => (
+        is       => 'ro',
+        isa      => 'Str',
+        required => 1,
+    );
+
+    1;
+
+=head1 DESCRIPTION
+
+=attr content
+
+The object's actual content.
+
+=attr size
+
+The size (in bytes) of the object content.
+
+=meth kind
+
+Returns the object "kind". This method must be defined in the class
+consuming this role.
+
+As an example, in Git, it's one of C<blob>, C<tree>, C<commit>, and C<tag>.
+
+=meth content_fh
+
+Returns a newly opened filehandle on the object content.
+
+This method is recommended over using C<content> directly,
+as it makes it possible to process objects of arbitrary size.
+(The actual filehandle creation is usually delegated to one
+of the composed L<Glow::Role::ContentBuilder> roles.)
+
+By default, L<Glow::Role::Object> composes
+the L<Glow::Role::ContentBuilder::FromFile>
+and L<Glow::Role::ContentBuilder::FromClosure>
+roles.
+
+=meth as_string
+
+Return a string representation of the content.
+
+By default, same as C<content()>, but some classes may override it.
+
+=cut
