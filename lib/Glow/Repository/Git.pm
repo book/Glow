@@ -65,6 +65,9 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
 
         # register kind to class mapping
         $kind2class->{$kind} = $class;
+
+        # make immutable
+        $class->meta->make_immutable;
     }
 
     # the loose storage class
@@ -78,6 +81,7 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
             },
         ],
     );
+    Glow::Repository::Git::Storage::Loose->meta->make_immutable;
 
 }
 
