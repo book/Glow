@@ -38,6 +38,7 @@ has content_builder => (
     isa      => 'Str',
     required => 0,
     writer   => '_set_content_builder',
+    init_arg => undef,
 );
 
 sub as_string { $_[0]->content }
