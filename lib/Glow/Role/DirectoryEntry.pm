@@ -45,4 +45,19 @@ The filename of the object, relative to the current I<tree>.
 
 The object digest.
 
+=head1 REQUIRED METHODS
+
+=head2 as_content
+
+Returns a string representation of the directory entry as stored
+in a tree object.
+
+This is used by L<Glow::Role::ContentBuilder::FromDirectoryEntries>
+to build the content from a list of L<Glow::Roles::DirectoryEntry>
+objects.
+
+=head2 as_string
+
+Returns a user-readable string representation of the directory entry.
+
 =cut
