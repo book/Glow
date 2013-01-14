@@ -130,13 +130,6 @@ The object's actual content.
 
 The size (in bytes) of the object content.
 
-=meth kind
-
-Returns the object "kind". This method must be defined in the class
-consuming this role.
-
-As an example, in Git, it's one of C<blob>, C<tree>, C<commit>, and C<tag>.
-
 =meth content_fh
 
 Returns a newly opened filehandle on the object content.
@@ -156,5 +149,13 @@ roles.
 Return a string representation of the content.
 
 By default, same as C<content()>, but some classes may override it.
+
+=head1 REQUIRED METHODS
+
+=head2 kind
+
+Returns the object "kind".
+
+As an example, in Git, it is one of C<blob>, C<tree>, C<commit>, and C<tag>.
 
 =cut
