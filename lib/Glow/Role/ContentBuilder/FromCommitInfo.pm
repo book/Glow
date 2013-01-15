@@ -68,11 +68,11 @@ sub _build_commit_info {
                 );
             }
             else {
-                $key = $method_map{$key} || $key;
-                if ( $key =~ s/^\@// ) {
-                    push @{ $commit_info->{$key} }, $value;
+                my $mkey = $method_map{$key} || $key;
+                if ( $mkey =~ s/^\@// ) {
+                    push @{ $commit_info->{$mkey} }, $value;
                 }
-                else { $commit_info->{$key} = $value; }
+                else { $commit_info->{$mkey} = $value; }
             }
         }
     }
@@ -84,8 +84,7 @@ sub _build_fh_using_commit_info {
     my ($self) = @_;
     my $content;
     $content .= 'tree ' . $self->tree_digest . "\n";
-    $content .= join( ' ', parent => $self->parents_digest ) . "\n"
-        if $self->parents_digest;
+    $content .= "parent $_\n" for $self->parents_digest;
     $content .= join( ' ',
         author => $self->author->ident,
         $self->authored_time->epoch,
