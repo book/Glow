@@ -2,6 +2,7 @@ package Glow::Role::ContentBuilder::FromCommitInfo;
 use Moose::Role;
 use Glow::Actor;
 
+use DateTime;
 use Encode qw( decode );
 
 with 'Glow::Role::ContentBuilder';

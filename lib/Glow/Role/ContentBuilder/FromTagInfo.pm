@@ -3,6 +3,7 @@ use Moose::Role;
 use Glow::Actor;
 
 use Encode qw( decode );
+use DateTime;
 
 with 'Glow::Role::ContentBuilder';
 
