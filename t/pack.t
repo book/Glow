@@ -55,5 +55,12 @@ for my $pack (@packs) {
     }
 }
 
+# check that we can't add to a pack
+ok( !$packs[0]->put_object(
+        Glow::Repository::Git::Object::Blob->new( content => 'hello' )
+    ),
+    '!put_object'
+);
+
 done_testing;
 
