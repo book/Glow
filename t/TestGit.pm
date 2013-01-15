@@ -158,6 +158,44 @@ COMMIT
             file   => 't/content/commit_say_hi',
             digest => '3a4098405fa5a807b2306e345dda70d33d229c91',
         },
+        {   desc        => 'a merge',
+            commit_info => {
+                tree_digest    => '71ff52fcd190c0a900fffad2ecf2f678554602b6',
+                parents_digest => [
+                    '3a4098405fa5a807b2306e345dda70d33d229c91',
+                    'ef25e81ba86b7df16956c974c8a9c1ff2eca1326',
+                ],
+                author => Glow::Actor->new(
+                    name  => 'Philippe Bruhat (BooK)',
+                    email => 'book@cpan.org'
+                ),
+                authored_time => DateTime->from_epoch(
+                    epoch     => 1358247404,
+                    time_zone => '+0100'
+                ),
+                committer => Glow::Actor->new(
+                    name  => 'Philippe Bruhat (BooK)',
+                    email => 'book@cpan.org'
+                ),
+                committed_time => DateTime->from_epoch(
+                    epoch     => 1358247404,
+                    time_zone => '+0100'
+                ),
+                comment  => 'a merge',
+                encoding => 'utf-8',
+            },
+            content => << 'COMMIT',
+tree 71ff52fcd190c0a900fffad2ecf2f678554602b6
+parent 3a4098405fa5a807b2306e345dda70d33d229c91
+parent ef25e81ba86b7df16956c974c8a9c1ff2eca1326
+author Philippe Bruhat (BooK) <book@cpan.org> 1358247404 +0100
+committer Philippe Bruhat (BooK) <book@cpan.org> 1358247404 +0100
+
+a merge
+COMMIT
+            file   => 't/content/commit_merge',
+            digest => '9d94853f1733007321288974bce2cec5bb07a6df',
+        },
     ],
     tag => [
         {   desc     => 'world tag',
