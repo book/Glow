@@ -55,12 +55,15 @@ for my $pack (@packs) {
     }
 }
 
-# check that we can't add to a pack
+# check that we can't add to, delete from or otherwise write to a pack
 ok( !$packs[0]->put_object(
         Glow::Repository::Git::Object::Blob->new( content => 'hello' )
     ),
     '!put_object'
 );
+ok( !$packs[0]->delete_object( ( keys %pack_contains )[0] ),
+    '!delete_object' );
+ok( $packs[0]->readonly, 'pack is readonly' );
 
 done_testing;
 
