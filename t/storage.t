@@ -32,7 +32,7 @@ __PACKAGE__->meta->make_immutable;
 
 package TestGlow::Object::Blob;
 use Moose;
-with 'Glow::Role::Blob', 'Glow::Role::Digest' => { algorithm => 'SHA-256' };
+with 'Glow::Role::Object', 'Glow::Role::Digest' => { algorithm => 'SHA-256' };
 
 sub kind {'BLOB'}
 

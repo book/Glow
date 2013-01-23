@@ -2,7 +2,7 @@ package Glow::Repository::Git::Blob;
 
 use Moose;
 
-with 'Glow::Role::Blob',
+with 'Glow::Role::Object',
     'Glow::Role::Digest' => { algorithm => 'SHA-1' },
     'Glow::Role::ContentBuilder::FromGit';
 
