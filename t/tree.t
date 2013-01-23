@@ -15,7 +15,7 @@ for my $test ( @{ $objects{tree} } ) {
     {
         diag "$test->{desc} with $args->[0]";
 
-        my $tree = Glow::Repository::Git::Object::Tree->new(@$args);
+        my $tree = Glow::Repository::Git::Tree->new(@$args);
         test_tree( $tree, $test );
     }
 }

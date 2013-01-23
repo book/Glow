@@ -15,7 +15,7 @@ for my $test ( @{ $objects{commit} } ) {
     {
         diag "$test->{desc} with $args->[0]";
 
-        my $commit = Glow::Repository::Git::Object::Commit->new(@$args);
+        my $commit = Glow::Repository::Git::Commit->new(@$args);
         test_commit( $commit, $test );
     }
 }

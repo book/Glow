@@ -257,7 +257,7 @@ sub test_blob_mem {
     my ( $blob, $test ) = @_;
 
     # read content in memory early
-    isa_ok( $blob, 'Glow::Repository::Git::Object::Blob' );
+    isa_ok( $blob, 'Glow::Repository::Git::Blob' );
     is( $blob->kind,                $test->{kind},     'kind' );
     is( $blob->content,             $test->{content},  'content' );
     is( $blob->content_fh->getline, $test->{lines}[0], 'content_fh' );
@@ -271,7 +271,7 @@ sub test_blob_fh {
     my ( $blob, $test ) = @_;
 
     # do not to read content in memory until the last test
-    isa_ok( $blob, 'Glow::Repository::Git::Object::Blob' );
+    isa_ok( $blob, 'Glow::Repository::Git::Blob' );
     is( $blob->kind,                $test->{kind},     'kind' );
     is( $blob->digest,              $test->{digest},   'digest' );
     is( $blob->sha1,                $test->{sha1},     'sha1' );
@@ -283,7 +283,7 @@ sub test_blob_fh {
 sub test_tree {
     my ( $tree, $test ) = @_;
 
-    isa_ok( $tree, 'Glow::Repository::Git::Object::Tree' );
+    isa_ok( $tree, 'Glow::Repository::Git::Tree' );
     is( join( '', $tree->content_fh->getlines ),
         $test->{content}, 'content_fh' );
     is( $tree->kind,    $test->{kind},    'kind' );
@@ -304,7 +304,7 @@ sub test_tree {
 sub test_commit {
     my ( $commit, $test ) = @_;
 
-    isa_ok( $commit, 'Glow::Repository::Git::Object::Commit' );
+    isa_ok( $commit, 'Glow::Repository::Git::Commit' );
     is( $commit->kind, $test->{kind}, 'kind' );
     is( join( '', $commit->content_fh->getlines ),
         $test->{content}, 'content_fh' );
@@ -337,7 +337,7 @@ sub test_commit {
 sub test_tag {
     my ( $tag, $test ) = @_;
 
-    isa_ok( $tag, 'Glow::Repository::Git::Object::Tag' );
+    isa_ok( $tag, 'Glow::Repository::Git::Tag' );
     is( $tag->kind,                $test->{kind},     'kind' );
     is( $tag->content_fh->getline, $test->{lines}[0], 'content_fh' );
     is( join( '', $tag->content_fh->getlines ),

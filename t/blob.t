@@ -15,10 +15,10 @@ for my $test ( @{ $objects{blob} } ) {
         diag "$test->{desc} with $args->[0]";
         my $blob;
 
-        $blob = Glow::Repository::Git::Object::Blob->new(@$args);
+        $blob = Glow::Repository::Git::Blob->new(@$args);
         test_blob_mem($blob, $test);
 
-        $blob = Glow::Repository::Git::Object::Blob->new(@$args);
+        $blob = Glow::Repository::Git::Blob->new(@$args);
         test_blob_fh($blob, $test);
     }
 }
@@ -38,7 +38,7 @@ my @errors = (
 
 for my $t (@errors) {
     my ( $args, $error, $mesg ) = @$t;
-    ok( !eval { Glow::Repository::Git::Object::Blob->new(@$args); }, $mesg );
+    ok( !eval { Glow::Repository::Git::Blob->new(@$args); }, $mesg );
     like( $@, $error, 'expected error message' );
 }
 

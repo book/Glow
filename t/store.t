@@ -19,7 +19,7 @@ my $loose_w = Glow::Repository::Git::Storage::Loose->new(
 my $store = Glow::Store->new( stores => [ $loose_r, $loose_w ] );
 
 # create a random object, not in any storage
-my $blob = Glow::Repository::Git::Object::Blob->new(
+my $blob = Glow::Repository::Git::Blob->new(
     content => 'some random string' );
 ok( !$loose_r->has_object( $blob->digest ), 'blob not in readonly storage' );
 ok( !$loose_w->has_object( $blob->digest ), 'blob not in writable storage' );

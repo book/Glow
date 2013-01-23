@@ -15,7 +15,7 @@ for my $test ( @{ $objects{tag} } ) {
     {
         diag "$test->{desc} with $args->[0]";
 
-        my $tag = Glow::Repository::Git::Object::Tag->new(@$args);
+        my $tag = Glow::Repository::Git::Tag->new(@$args);
         test_tag( $tag, $test );
     }
 }

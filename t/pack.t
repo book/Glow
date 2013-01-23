@@ -57,7 +57,7 @@ for my $pack (@packs) {
 
 # check that we can't add to, delete from or otherwise write to a pack
 ok( !$packs[0]->put_object(
-        Glow::Repository::Git::Object::Blob->new( content => 'hello' )
+        Glow::Repository::Git::Blob->new( content => 'hello' )
     ),
     '!put_object'
 );
