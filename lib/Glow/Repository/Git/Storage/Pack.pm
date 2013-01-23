@@ -5,7 +5,7 @@ use MooseX::Types::Path::Class;
 use IO::File;
 use namespace::autoclean;
 
-with 'Glow::Role::Storage';
+with 'Glow::Repository::Git::Storage';
 
 has filename => (
     is       => 'ro',
@@ -93,7 +93,7 @@ sub get_object {
     return unless $offset;
 
     my ( $kind, $size, $content ) = $self->unpack_object($offset);
-    return Glow::Repository::Git::Storage::Loose->kind2class($kind)->new(
+    return $self->kind2class($kind)->new(
         digest  => $digest,
         size    => $size,
         content => $content

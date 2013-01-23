@@ -55,4 +55,6 @@ sub delete_object {
         $self->stores;
 }
 
+sub kind2class;
+
 __PACKAGE__->meta->make_immutable;

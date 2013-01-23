@@ -26,6 +26,8 @@ sub delete_object {
     return !!delete $self->store->{$digest};
 }
 
+sub kind2class { { BLOB => 'TestGlow::Object::Blob' }->{ $_[1] } }
+
 __PACKAGE__->meta->make_immutable;
 
 package TestGlow::Object::Blob;
