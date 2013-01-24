@@ -7,6 +7,9 @@ with 'Glow::Role::Object',
     'Glow::Role::HashFromContent',
     'Glow::Role::ContentBuilder::FromGit';
 
+use DateTime::TimeZone;
+use IO::String;
+
 sub _header_spec { () }    # nothing special
 
 has object => (

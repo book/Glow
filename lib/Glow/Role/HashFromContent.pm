@@ -4,6 +4,8 @@ use Moose::Role;
 
 requires qw( _header_spec _build_fh_using_attributes );
 
+use Glow::Actor;
+use DateTime;
 use Encode qw( decode );
 
 has hash => (
