@@ -15,6 +15,18 @@ has hash => (
     init_arg => undef,
 );
 
+around new => sub {
+    my ( $orig, $class, @args ) = @_;
+    my $self = $class->$orig(@args);
+
+    # if none of the ContentBuilder roles was triggered in the constructor
+    # that means we passed the whole set of attributes
+    $self->_content_from_trigger('attributes')
+        if !$self->has_content && !$self->content_builder;
+
+    return $self;
+};
+
 sub _build_hash {
     my ($self) = @_;
     my %spec   = $self->_header_spec;
@@ -49,6 +61,24 @@ sub _build_hash {
     $hash->{body} = join "\n", @lines;
 
     return $hash;
+}
+
+# build the interesting attributes from a "name <email> epoch tz" line
+sub _build_actor_attr {
+    my ( $self, $actor, $attr ) = @_;
+    $attr ||= $actor;
+
+    my @data = split ' ', $_[0]->hash->{$actor};
+    my ( $email, $epoch, $tz ) = splice( @data, -3 );
+    return $attr eq $actor
+        ? Glow::Actor->new(
+        name => join( ' ', @data ),
+        email => substr( $email, 1, -1 ),
+        )
+        : DateTime->from_epoch(
+        epoch     => $epoch,
+        time_zone => $tz
+        );
 }
 
 1;
