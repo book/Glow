@@ -352,12 +352,12 @@ sub test_tag {
     for my $attr (qw( object type tag tagged_time comment )) {
         is( $tag_info->{$attr},
             $test->{tag_info}{$attr},
-            "commit_info $attr"
+            "tag_info $attr"
         );
     }
     is( $tag_info->{tagger}->ident,
         $test->{tag_info}{tagger}->ident,
-        "commit_info tagger"
+        "tag_info tagger"
     );
     is( $tag->as_string, $test->{string}, 'as_string' );
 }
