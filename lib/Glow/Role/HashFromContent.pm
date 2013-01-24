@@ -31,12 +31,13 @@ sub _build_hash {
     delete $header{''};
 
     # deal with encoding (if any)
-    my $encoding = $header{encoding} || 'utf-8';
+    my $encoding = exists $spec{encoding} && ( $header{encoding} || 'utf-8' );
 
     # process each pair
     for my $key ( keys %header ) {
         my ( $attr, $type ) = @{ $spec{$key} || [ $key, '-' ] };
-        $header{$key} = [ map decode( $encoding, $_ ), @{ $header{$key} } ];
+        $header{$key} = [ map decode( $encoding, $_ ), @{ $header{$key} } ]
+            if $encoding;
         $hash->{$attr}
             = $type eq '-' ? $header{$key}[-1]
             : $type eq '@' ? $header{$key}
