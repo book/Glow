@@ -8,7 +8,7 @@ for my $test ( @{ $objects{commit} } ) {
     for my $args (
         [ content                 => $test->{content} ],
         [ content_from_file       => $test->{file} ],
-        [ commit_info             => $test->{commit_info} ],
+        [ %{ $test->{commit_info} } ],
         [ content_fh_from_closure => $test->{closure} ],
         ( [ git => $git, digest => $test->{digest} ] )x!! $git
         )
