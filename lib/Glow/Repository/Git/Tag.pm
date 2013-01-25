@@ -10,6 +10,10 @@ with 'Glow::Role::Object',
 use DateTime::TimeZone;
 use IO::String;
 
+sub kind {'tag'}
+
+*sha1 = \&digest;
+
 sub _header_spec { () }    # nothing special
 
 has object => (
@@ -59,10 +63,6 @@ has comment => (
     required => 0,
     default  => sub { $_[0]->hash->{body} },
 );
-
-sub kind {'tag'}
-
-*sha1 = \&digest;
 
 sub tag_info {
     my ($self) = @_;
