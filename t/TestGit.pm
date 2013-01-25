@@ -316,20 +316,26 @@ sub test_commit {
     # can't use is_deeply here
     my $commit_info = $commit->commit_info;
     for my $attr (qw( tree_digest authored_time committed_time comment )) {
+        is( $commit->$attr, $test->{commit_info}{$attr}, $attr );
         is( $commit_info->{$attr},
             $test->{commit_info}{$attr},
-            "commit_info $attr"
+            "$attr (via commit_info)"
         );
     }
     for my $attr (qw( author committer )) {
+        is( $commit->$attr->ident, $test->{commit_info}{$attr}->ident,
+            $attr );
         is( $commit_info->{$attr}->ident,
             $test->{commit_info}{$attr}->ident,
-            "commit_info $attr"
+            "$attr (via commit_info)"
         );
     }
+    is( join( ' ', $commit->parents_digest ),
+        join( ' ', @{ $test->{commit_info}{parents_digest} || [] } ),
+        'parents_digest' );
     is( join( ' ', @{ $commit_info->{parents_digest} } ),
         join( ' ', @{ $test->{commit_info}{parents_digest} || [] } ),
-        'commit_info parents_digest'
+        'parents_digest (via commit_info)'
     );
     is( $commit->as_string, $test->{string}, 'as_string' );
 }
@@ -350,14 +356,16 @@ sub test_tag {
     # can't use is_deeply here
     my $tag_info = $tag->tag_info;
     for my $attr (qw( object type tag tagged_time comment )) {
+        is( $tag->$attr, $test->{tag_info}{$attr}, $attr );
         is( $tag_info->{$attr},
             $test->{tag_info}{$attr},
-            "tag_info $attr"
+            "$attr (via tag_info)"
         );
     }
+    is( $tag->tagger->ident, $test->{tag_info}{tagger}->ident, 'tagger' );
     is( $tag_info->{tagger}->ident,
         $test->{tag_info}{tagger}->ident,
-        "tag_info tagger"
+        "tagger (via tag_info)"
     );
     is( $tag->as_string, $test->{string}, 'as_string' );
 }
