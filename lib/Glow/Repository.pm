@@ -1,24 +1,20 @@
 package Glow::Repository;
 
-use Moose;
-use namespace::autoclean;
+use strict;
+use warnings;
 
-with 'Glow::Role::Repository';
-
-around new => sub {
-    my ( $orig, $class, @args ) = @_;
-    my $self = $class->$orig(@args);
+sub new {
+    my ( $class, $dir ) = @_;
+    my $config = Glow::Config->new( directory => $dir );
 
     # get the class from the config
-    $class = $self->config->get( key => 'glow.class' )
+    $class = $config->get( key => 'glow.class' )
         || 'Glow::Repository::Git';
     eval "require $class" or die $@;
-    $class->new(@args);
-};
+    $class->new( directory => $dir );
+}
 
-sub _build_object_store;    # stub
-
-__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
+1;
 
 # ABSTRACT: Factory class to build objects doing Glow::Role::Repository
 
@@ -29,7 +25,7 @@ __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
     use Glow::Repository;
 
     # .git is a Git repository's GIT_DIR
-    my $r = Glow::Repository->new( directory => '.git' );
+    my $r = Glow::Repository->new( '.git' );
 
     # $r is now a Glow::Repository::Git object
 

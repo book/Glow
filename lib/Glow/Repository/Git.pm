@@ -20,7 +20,7 @@ has '+config' => ( isa => 'Glow::Repository::Git::Config' );
 # builder methods
 sub _build_config {
     my ($self) = @_;
-    return Glow::Repository::Git::Config->new( repository => $self );
+    return Glow::Repository::Git::Config->new( directory => $self->directory );
 }
 
 sub _build_object_store {

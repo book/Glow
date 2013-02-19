@@ -1,21 +1,23 @@
 package Glow::Config;
 
 use Moose;
+use MooseX::Types::Path::Class;
 use namespace::autoclean;
 
 extends 'Config::GitLike';
 
 has '+confname' => ( default => 'glowconfig', );
-has 'repository' => (
+
+has 'directory' => (
     is       => 'ro',
-    does     => 'Glow::Role::Repository',
+    isa      => 'Path::Class::Dir',
     required => 1,
-    weak_ref => 1
+    coerce   => 1,
 );
 
 override dir_file => sub {
     my ($self) = @_;
-    return $self->repository->directory->file('config');
+    return $self->directory->file('config');
 };
 
 __PACKAGE__->meta->make_immutable;

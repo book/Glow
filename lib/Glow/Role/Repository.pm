@@ -33,7 +33,7 @@ has 'object_store' => (
 
 sub _build_config {
     my ($self) = @_;
-    return Glow::Config->new( repository => $self );
+    return Glow::Config->new( directory => $self->directory );
 }
 
 1;

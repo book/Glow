@@ -8,7 +8,7 @@ our ( %objects, %test_func );
 use Glow::Repository;
 
 # a repository to read from
-my $r = Glow::Repository->new( directory => 't/git' );
+my $r = Glow::Repository->new( 't/git' );
 isa_ok( $r, 'Glow::Repository::Git' );
 
 # a repository to write to
