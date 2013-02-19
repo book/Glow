@@ -5,18 +5,16 @@ use namespace::autoclean;
 
 with 'Glow::Role::Repository';
 
-around new => sub {
-    my ( $orig, $class, @args ) = @_;
-    my $self = $class->$orig(@args);
+sub _build_object_store;    # stub
 
-    # get the class from the config
-    $class = $self->config->get( key => 'glow.class' )
+sub spawn {
+  my $self = shift;
+  $self->config->get( key => 'glow.class' )
         || 'Glow::Repository::Git';
     eval "require $class" or die $@;
-    $class->new(@args);
-};
+  $class->new(@_);
+}
 
-sub _build_object_store;    # stub
 
 __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 
