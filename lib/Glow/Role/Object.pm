@@ -130,7 +130,7 @@ The object's actual content.
 
 The size (in bytes) of the object content.
 
-=meth content_fh
+=method content_fh
 
 Returns a newly opened filehandle on the object content.
 
@@ -144,7 +144,7 @@ the L<Glow::Role::ContentBuilder::FromFile>
 and L<Glow::Role::ContentBuilder::FromClosure>
 roles.
 
-=meth as_string
+=method as_string
 
 Return a string representation of the content.
 
