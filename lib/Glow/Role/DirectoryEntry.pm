@@ -20,7 +20,7 @@ has 'digest'   => ( is => 'ro', isa => 'Str', required => 1 );
 
     has mode => ( is => 'ro', isa => 'Str', required => 1 );
 
-    # these methods are required bye Glow::Role::DirectoryEntry
+    # these methods are required by Glow::Role::DirectoryEntry
     sub as_content {...}
     sub as_string  {...}
 
