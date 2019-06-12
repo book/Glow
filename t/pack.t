@@ -2,7 +2,8 @@ use strict;
 use warnings;
 use Test::More;
 use File::Temp qw( tempdir );
-use t::TestGit;
+use lib 't/lib';
+use TestGit;
 our ( %objects, %test_func );
 
 use Glow::Repository::Git::Storage::Pack;

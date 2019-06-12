@@ -1,7 +1,8 @@
 use strict;
 use warnings;
 use Test::More;
-use t::TestGit;
+use lib 't/lib';
+use TestGit;
 our ( %objects, $git );
 
 for my $test ( @{ $objects{blob} } ) {
