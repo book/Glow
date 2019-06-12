@@ -59,8 +59,7 @@ sub _build_size {
     return length $self->content if $self->has_content;
 
     my $fh = $self->content_fh;
-    if( $fh->can('seek') ) {
-        $fh->seek( 0, SEEK_END );
+    if( $fh->can('seek') && $fh->seek( 0, SEEK_END ) ) {
         return $fh->tell;
     }
     else {
