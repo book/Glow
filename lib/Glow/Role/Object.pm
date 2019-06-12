@@ -66,7 +66,7 @@ sub _build_size {
     else {
         my $size = 0;
         my $buffer;
-        while ( my $read = $fh->sysread( $buffer, 8192 ) ) { $size += $read }
+        while ( my $read = $fh->read( $buffer, 8192 ) ) { $size += $read }
         return $size;
     }
 }

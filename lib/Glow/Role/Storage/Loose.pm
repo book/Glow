@@ -98,9 +98,9 @@ sub put_object {
         or die "Can't open $filename: $DeflateError";
     my $buffer = $object->kind . ' ' . $object->size . "\0";
     while ( length $buffer ) {
-        $zh->syswrite($buffer)
+        $zh->write($buffer)
             or die "Error writing to $filename: $!";
-        my $read = $fh->sysread( $buffer, 8192 );
+        my $read = $fh->read( $buffer, 8192 );
         die "Error reading content from ${\$object->digest}: $!"
             if !defined $read;
     }
