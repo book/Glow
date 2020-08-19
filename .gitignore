@@ -7,3 +7,7 @@ cover_db
 *.patch
 setup
 mess/
+.build
+cpanfile.snapshot
+local/
+.perl-version
